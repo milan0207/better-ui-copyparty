@@ -800,16 +800,16 @@ modal.load();
 
 // toolbar
 ebi('ops').innerHTML = (
-	'<a href="#" id="opa_x" data-dest="" tt="' + L.ot_close + '">--</a>' +
-	'<a href="#" id="opa_srch" data-perm="read" data-dep="idx" data-dest="search" tt="' + L.ot_search + '">🔎</a>' +
-	(have_del ? '<a href="#" id="opa_del" data-perm="write" data-dest="unpost" tt="' + L.ot_unpost + '">🧯</a>' : '') +
-	'<a href="#" id="opa_up" data-dest="up2k">🚀</a>' +
-	'<a href="#" id="opa_bup" data-perm="write" data-dest="bup" tt="' + L.ot_bup + '">🎈</a>' +
-	'<a href="#" id="opa_mkd" data-perm="write" data-dest="mkdir" tt="' + L.ot_mkdir + '">📂</a>' +
-	'<a href="#" id="opa_md" data-perm="read write" data-dest="new_md" tt="' + L.ot_md + '">📝</a>' +
-	'<a href="#" id="opa_msg" data-dest="msg" tt="' + L.ot_msg + '">📟</a>' +
-	'<a href="#" id="opa_auc" data-dest="player" tt="' + L.ot_mp + '">🎺</a>' +
-	'<a href="#" id="opa_cfg" data-dest="cfg" tt="' + L.ot_cfg + '">⚙️</a>' +
+	'<a href="#" id="opa_x" data-dest="" tt="' + L.ot_close + '"></a>' +
+	'<a href="#" id="opa_srch" data-perm="read" data-dep="idx" data-dest="search" tt="' + L.ot_search + '"></a>' +
+	(have_del ? '<a href="#" id="opa_del" data-perm="write" data-dest="unpost" tt="' + L.ot_unpost + '"></a>' : '') +
+	'<a href="#" id="opa_up" data-dest="up2k"></a>' +
+	'<a href="#" id="opa_bup" data-perm="write" data-dest="bup" tt="' + L.ot_bup + '"></a>' +
+	'<a href="#" id="opa_mkd" data-perm="write" data-dest="mkdir" tt="' + L.ot_mkdir + '"></a>' +
+	'<a href="#" id="opa_md" data-perm="read write" data-dest="new_md" tt="' + L.ot_md + '"></a>' +
+	'<a href="#" id="opa_msg" data-dest="msg" tt="' + L.ot_msg + '"></a>' +
+	'<a href="#" id="opa_auc" data-dest="player" tt="' + L.ot_mp + '"></a>' +
+	'<a href="#" id="opa_cfg" data-dest="cfg" tt="' + L.ot_cfg + '"></a>' +
 	(IE ? '<span id="noie">' + L.ot_noie + '</span>' : '') +
 	'<div id="opdesc"></div>'
 );
@@ -820,31 +820,31 @@ ebi('widget').innerHTML = (
 	'<div id="wtoggle">' +
 	'<span id="wfs"></span>' +
 	'<span id="wfm"><a' +
-	' href="#" id="fshr" tt="' + L.wt_shr + '">📨<span>share</span></a><a' +
-	' href="#" id="fren" tt="' + L.wt_ren + '">✎<span>name</span></a><a' +
-	' href="#" id="fdel" tt="' + L.wt_del + '">⌫<span>del.</span></a><a' +
-	' href="#" id="fcut" tt="' + L.wt_cut + '">✂<span>cut</span></a><a' +
-	' href="#" id="fcpy" tt="' + L.wt_cpy + '">⧉<span>copy</span></a><a' +
-	' href="#" id="fpst" tt="' + L.wt_pst + '">📋<span>paste</span></a>' +
+	' href="#" id="fshr" tt="' + L.wt_shr + '"><span>share</span></a><a' +
+	' href="#" id="fren" tt="' + L.wt_ren + '"><span>name</span></a><a' +
+	' href="#" id="fdel" tt="' + L.wt_del + '"><span>del.</span></a><a' +
+	' href="#" id="fcut" tt="' + L.wt_cut + '"><span>cut</span></a><a' +
+	' href="#" id="fcpy" tt="' + L.wt_cpy + '"><span>copy</span></a><a' +
+	' href="#" id="fpst" tt="' + L.wt_pst + '"><span>paste</span></a>' +
 	'</span><span id="wzip1"><a' +
-	' href="#" id="zip1" tt="' + L.wt_zip1 + '">📦<span>zip</span></a>' +
+	' href="#" id="zip1" tt="' + L.wt_zip1 + '"><span>zip</span></a>' +
 	'</span><span id="wzip"><a' +
 	' href="#" id="selall" tt="' + L.wt_selall + '">sel.<br />all</a><a' +
 	' href="#" id="selinv" tt="' + L.wt_selinv + '">sel.<br />inv.</a><a' +
 	' href="#" id="selzip" class="l1" tt="' + L.wt_selzip + '">zip</a><a' +
 	' href="#" id="seldl" class="l1" tt="' + L.wt_seldl + '">dl</a>' +
 	'</span><span id="wnp"><a' +
-	' href="#" id="npirc" tt="' + L.wt_npirc + '">📋<span>irc</span></a><a' +
-	' href="#" id="nptxt" tt="' + L.wt_nptxt + '">📋<span>txt</span></a>' +
+	' href="#" id="npirc" tt="' + L.wt_npirc + '"><span>irc</span></a><a' +
+	' href="#" id="nptxt" tt="' + L.wt_nptxt + '"><span>txt</span></a>' +
 	'</span><span id="wm3u"><a' +
-	' href="#" id="m3ua" tt="' + L.wt_m3ua + '">📻<span>add</span></a><a' +
-	' href="#" id="m3uc" tt="' + L.wt_m3uc + '">📻<span>copy</span></a>' +
+	' href="#" id="m3ua" tt="' + L.wt_m3ua + '"><span>add</span></a><a' +
+	' href="#" id="m3uc" tt="' + L.wt_m3uc + '"><span>copy</span></a>' +
 	'</span><a' +
-	'	href="#" id="wtgrid" tt="' + L.wt_grid + '">田</a><a' +
+	'	href="#" id="wtgrid" tt="' + L.wt_grid + '"></a><a' +
 	'	href="#" id="wtico">♫</a>' +
 	'</div>' +
 	'<div id="widgeti">' +
-	'	<div id="pctl"><a href="#" id="bprev" tt="' + L.wt_prev + '">⏮</a><a href="#" id="bplay" tt="' + L.wt_play + '">▶</a><a href="#" id="bnext" tt="' + L.wt_next + '">⏭</a></div>' +
+	'	<div id="pctl"><a href="#" id="bprev" tt="' + L.wt_prev + '"></a><a href="#" id="bplay" class="play" tt="' + L.wt_play + '"></a><a href="#" id="bnext" tt="' + L.wt_next + '"></a></div>' +
 	'	<canvas id="pvol" width="288" height="38"></canvas>' +
 	'	<canvas id="barpos"></canvas>' +
 	'	<canvas id="barbuf"></canvas>' +
@@ -1993,7 +1993,7 @@ var widget = (function () {
 	r.paused = function (paused) {
 		if (was_paused != paused) {
 			was_paused = paused;
-			ebi('bplay').innerHTML = paused ? '▶' : '⏸';
+			ebi('bplay').className = paused ? 'play' : 'pause';
 		}
 	};
 	r.setvis = function () {
@@ -8529,7 +8529,7 @@ var settheme = (function () {
 		var html = [],
 			cb = ebi('themes'),
 			itheme = ax.indexOf(theme[0]) * 2 + (light ? 1 : 0),
-			names = ['classic dark', 'classic light', 'pm-monokai', 'flat light', 'vice', 'hotdog stand', 'hacker', 'hi-con', 'phi95 dark', 'phi95'];
+			names = ['classic dark', 'classic light', 'pm-monokai', 'flat light', 'vice', 'hotdog stand', 'hacker', 'hi-con', 'phi95 dark', 'phi95', 'modern'];
 
 		for (var a = 0; a < themes; a++)
 			html.push('<option value="{0}">{0} ┃ {1}</option>'.format(a, names[a] || 'custom'));

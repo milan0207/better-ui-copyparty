@@ -42,7 +42,7 @@
 	<div id="op_mkdir" class="opview opbox {% if not ls0 %}act{% endif %}">
 		<form method="post" enctype="multipart/form-data" accept-charset="utf-8" action="{{ url_suf }}">
 			<input type="hidden" name="act" value="mkdir" />
-			📂<input type="text" name="name" class="i" placeholder="awesome mix vol.1">
+			<span class="ico"></span><input type="text" name="name" class="i" placeholder="awesome mix vol.1">
 			<input type="submit" value="make directory">
 		</form>
 	</div>
@@ -50,7 +50,7 @@
 	<div id="op_new_md" class="opview opbox">
 		<form method="post" enctype="multipart/form-data" accept-charset="utf-8" action="{{ url_suf }}">
 			<input type="hidden" name="act" value="new_md" />
-			📝<input type="text" name="name" class="i" placeholder="weekend-plans">
+			<span class="ico"></span><input type="text" name="name" class="i" placeholder="weekend-plans">
 			<input type="submit" value="new file">
 		</form>
 		<span id="new_mdi"></span>
@@ -58,7 +58,7 @@
 
 	<div id="op_msg" class="opview opbox {% if not ls0 %}act{% endif %}">
 		<form method="post" enctype="application/x-www-form-urlencoded" accept-charset="utf-8" action="{{ url_suf }}">
-			📟<input type="text" name="msg" class="i" placeholder="lorem ipsum dolor sit amet">
+			<span class="ico"></span><input type="text" name="msg" class="i" placeholder="lorem ipsum dolor sit amet">
 			<input type="submit" value="send msg to srv log">
 		</form>
 	</div>
@@ -70,7 +70,7 @@
 	<div id="op_cfg" class="opview opbox opwide"></div>
 
 	<h1 id="path">
-		<a href="#" id="entree">🌲</a>
+		<a href="#" id="entree"></a>
 		{%- for n in vpnodes %}
 		<a href="{{ r }}/{{ n[0] }}">{{ n[1] }}</a>
 		{%- endfor %}

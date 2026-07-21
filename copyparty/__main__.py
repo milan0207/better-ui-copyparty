@@ -1944,7 +1944,7 @@ def add_og(ap):
 
 
 def add_ui(ap, retry: int):
-    THEMES = 10
+    THEMES = 11
     ap2 = ap.add_argument_group("ui options")
     ap2.add_argument("--grid", action="store_true", help="show grid/thumbnails by default (volflag=grid)")
     ap2.add_argument("--gsel", action="store_true", help="select files in grid by ctrl-click (volflag=gsel)")
@@ -1954,7 +1954,7 @@ def add_ui(ap, retry: int):
     ap2.add_argument("--rcm", metavar="TXT", default="yy", help="rightclick-menu; two yes/no options: 1st y/n is enable-custom-menu, 2nd y/n is enable-double")
     ap2.add_argument("--lang", metavar="LANG", type=u, default="eng", help="language, for example \033[32meng\033[0m / \033[32mnor\033[0m / ...")
     ap2.add_argument("--glang", action="store_true", help="guess the browser's default language, otherwise fall back to \033[33m--lang\033[0m")
-    ap2.add_argument("--theme", metavar="NUM", type=int, default=0, help="default theme to use (0..%d)" % (THEMES - 1,))
+    ap2.add_argument("--theme", metavar="NUM", type=int, default=10, help="default theme to use (0..%d)" % (THEMES - 1,))
     ap2.add_argument("--themes", metavar="NUM", type=int, default=THEMES, help="number of themes installed")
     ap2.add_argument("--au-vol", metavar="0-100", type=int, default=50, choices=range(0, 101), help="default audio/video volume percent")
     ap2.add_argument("--sort", metavar="C,C,C", type=u, default="href", help="default sort order, comma-separated column IDs (see header tooltips), prefix with '-' for descending. Examples: \033[32mhref -href ext sz ts tags/Album tags/.tn\033[0m (volflag=sort)")
