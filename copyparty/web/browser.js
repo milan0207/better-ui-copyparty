@@ -133,6 +133,9 @@ if (1)
 		"ot_u2w": 'up2k: upload files with resume support (close your browser and drop the same files in later)$N$Nmultithreaded, and file timestamps are preserved, but it uses more CPU than [🎈]&nbsp; (the basic uploader)<br /><br />during uploads, this icon becomes a progress indicator!',
 		"ot_noie": 'Please use Chrome / Firefox / Edge',
 
+		"ff_ph": "filter",
+		"ff_tt": "hide files in this folder that don't match$NHotkey: Esc to clear",
+
 		"ab_mkdir": "make directory",
 		"ab_mkdoc": "new textfile",
 		"ab_msg": "send msg to srv log",
@@ -3969,8 +3972,9 @@ var fileman = (function () {
 			hpst = !(have_mv && has(perms, 'write')),
 			hshr = !can_shr || !get_evpath().indexOf(have_shr);
 
-		if (!(enren || endel || encut || enpst))
-			hren = hdel = hcut = hpst = true;
+		// `hide` now means "not permitted here" only; having nothing
+		// selected leaves the buttons visible but disabled, so the
+		// available actions are discoverable before selecting anything
 
 		clmod(bren, 'en', enren);
 		clmod(bdel, 'en', endel);
@@ -3985,7 +3989,7 @@ var fileman = (function () {
 		clmod(bpst, 'hide', hpst);
 		clmod(bshr, 'hide', hshr);
 
-		clmod(ebi('wfm'), 'act', QS('#wfm a.en:not(.hide)'));
+		clmod(ebi('wfm'), 'act', QS('#wfm a:not(.hide)'));
 		clmod(ebi('wtoggle'), 'm3u', mpl.m3uen && (nsel || (mp && mp.au)));
 
 		var wfs = ebi('wfs'), h = '';
@@ -5925,6 +5929,8 @@ var thegrid = (function () {
 		r.dirty = false;
 		r.bagit('#ggrid');
 		r.loadsel();
+		if (ffilter)  // innerHTML above dropped the filter classes
+			ffilter.apply();
 		aligngriditems();
 		setTimeout(r.tippen, 20);
 	}
@@ -9966,8 +9972,82 @@ function reload_mp() {
 }
 
 
+// client-side filter for the listing currently on screen;
+// lives before #entree in #path so reload_browser doesn't eat it
+var ffilter = (function () {
+	var r = {},
+		inp = ebi('ffilter_i'),
+		cnt = ebi('ffilter_n'),
+		box = ebi('ffilter'),
+		q = '';
+
+	// other languages fall back to english until translated
+	inp.setAttribute('placeholder', L.ff_ph || 'filter');
+	box.setAttribute('tt', L.ff_tt || '');
+
+	r.apply = function () {
+		var rows = QSA('#files tbody tr'),
+			nhit = 0, ntot = 0;
+
+		for (var a = 0, aa = rows.length; a < aa; a++) {
+			var tr = rows[a],
+				td = tr.cells[1],
+				link = td && td.getElementsByTagName('a')[0];
+
+			if (!link)
+				continue;
+
+			ntot++;
+			var hit = !q || link.textContent.toLowerCase().indexOf(q) >= 0;
+			if (hit)
+				nhit++;
+
+			clmod(tr, 'ffhide', !hit);
+
+			if (tr.id) {
+				var g = QS('#ggrid>a[ref="' + tr.id + '"]');
+				if (g)
+					clmod(g, 'ffhide', !hit);
+			}
+		}
+
+		cnt.textContent = q ? nhit + '/' + ntot : '';
+		clmod(box, 'act', !!q);
+	};
+
+	r.reset = function () {
+		inp.value = q = '';
+		r.apply();
+	};
+
+	r.clear = function (e) {
+		ev(e);
+		r.reset();
+		inp.focus();
+	};
+
+	inp.oninput = function () {
+		q = inp.value.toLowerCase();
+		r.apply();
+	};
+
+	inp.onkeydown = function (e) {
+		// only swallow esc if we have something to clear, otherwise
+		// let it bubble to ahotkeys (close panel / exit grid / ...)
+		if ((e.key == 'Escape' || e.keyCode == 27) && q)
+			r.clear(e);
+	};
+
+	ebi('ffilter_x').onclick = r.clear;
+
+	return r;
+})();
+
+
 function reload_browser() {
 	filecols.set_style();
+	if (ffilter)  // may not exist yet during early init
+		ffilter.reset();
 
 	var parts = get_evpath().split('/'),
 		rm = ebi('entree'),
