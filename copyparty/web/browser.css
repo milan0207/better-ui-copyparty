@@ -4827,3 +4827,63 @@ html.f #ffilter {
 }
 
 /* }}} */
+
+/* action bar relocated into the header (modern theme only) {{{ */
+
+html.f #path>#wtoggle {
+	position: static;
+	order: 8;
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: .1em;
+	top: auto;
+	right: auto;
+	height: auto;
+	font-size: 1.05em;
+	line-height: 1;
+	background: none;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	padding: 0;
+	color: var(--fg);
+}
+/* the filter follows the action bar */
+html.f #path>#wtoggle+* ~ #ffilter,
+html.f #path>#ffilter {
+	margin-left: .6em;
+}
+/* undo the nested em-scaling the bottom-right dock relied on */
+html.f #path>#wtoggle a {
+	font-size: 1.05em;
+	border-radius: var(--radius-sm);
+	padding: .25em .4em;
+	margin: 0;
+	display: inline-block;
+	text-align: center;
+	line-height: 1.1;
+}
+html.f #path>#wtoggle a>span {
+	font-size: .55em;
+	display: block;
+	letter-spacing: .01em;
+}
+html.f #path>#wtoggle #wfs {
+	font-size: .5em;
+	border: none;
+	text-align: right;
+	line-height: 1.2;
+	opacity: .8;
+}
+/* separators between the button groups */
+html.f #path>#wtoggle #wzip,
+html.f #path>#wtoggle #wnp,
+html.f #path>#wtoggle #wm3u {
+	border-width: 0 0 0 1px;
+	border-color: var(--border);
+	margin-left: .3em;
+	padding-left: .4em;
+}
+
+/* }}} */

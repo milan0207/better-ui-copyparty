@@ -8525,6 +8525,7 @@ var settheme = (function () {
 		var cl = document.documentElement.className;
 		cl = cl.replace(/\b(light|dark|[a-z]{1,2})\b/g, '').replace(/ +/g, ' ');
 		document.documentElement.className = cl + ' ' + theme + ' ';
+		place_wtoggle();
 
 		pbar.drawbuf();
 		pbar.drawpos();
@@ -9969,6 +9970,24 @@ function reload_mp() {
 	}
 
 	setTimeout(pbar.onresize, 1);
+}
+
+
+// the action bar docks bottom-right in the legacy themes, but belongs up
+// in the header in the modern one; #entree survives reload_browser, so
+// inserting before it keeps the bar across navigation
+function place_wtoggle() {
+	var wt = ebi('wtoggle'),
+		modern = / f /.test(' ' + document.documentElement.className + ' '),
+		dest = modern ? ebi('path') : ebi('widget');
+
+	if (!wt || !dest || wt.parentNode === dest)
+		return;
+
+	if (modern)
+		dest.insertBefore(wt, ebi('entree'));
+	else
+		dest.insertBefore(wt, dest.firstChild);  // back above #widgeti
 }
 
 
