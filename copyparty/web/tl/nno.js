@@ -220,7 +220,7 @@ Ls.nno = {
 	"cl_rcm": "høgreklikkmeny",
 	"cl_gauto": "auto田",
 
-	"ct_grid": '田 ikon',
+	"ct_grid": 'ikon',
 	"ct_ttips": 'vis hjelpetekst ved å holde musa over ting">tips',
 	"ct_thumb": 'vis miniatyrbilder i staden for ikon$NSnarvei: T">bilder',
 	"ct_csel": 'bruk tastane CTRL og SHIFT for markering av filer i ikonvising">merk',

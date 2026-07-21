@@ -224,7 +224,7 @@ Ls.vie = {
 	"cl_gauto": "lưới tự động", //m
 
 	// settings / tuỳ chọn
-	"ct_grid": '田 chế độ lưới',
+	"ct_grid": 'chế độ lưới',
 	"ct_ttips": '༼ ◕_◕ ༽">tooltips',
 	"ct_thumb": 'ở chế độ lưới, chuyển biểu tượng hoặc hình thu nhỏ$NPhím tắt: T">ảnh thu nhỏ',
 	"ct_csel": 'dùng CTRL và SHIFT để chọn tệp trong chế độ lưới">sel',

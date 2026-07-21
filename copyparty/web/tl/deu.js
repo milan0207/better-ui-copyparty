@@ -223,7 +223,7 @@ Ls.deu = {
 	"cl_rcm": "Rechtsklick-Menü",
 	"cl_gauto": "auto-raster", //m
 
-	"ct_grid": '田 Das Raster&trade;',
+	"ct_grid": 'Das Raster&trade;',
 	"ct_ttips": '◔ ◡ ◔">Tooltips',
 	"ct_thumb": 'In Raster-Ansicht, zwischen Icons und Vorschau wechseln$NHotkey: T">Vorschaubilder',
 	"ct_csel": 'Benutze STRG und UMSCHALT für Dateiauswahl in Raster-Ansicht">sel',

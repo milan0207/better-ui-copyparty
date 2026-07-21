@@ -224,7 +224,7 @@ Ls.hun = {
 	"cl_rcm": 'jobb-klikkes menü',
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 rács nézet',
+	"ct_grid": 'rács nézet',
 	"ct_ttips": '◔ ◡ ◔">segítő szövegek',
 	"ct_thumb": 'rács nézetben ikonok/indexképek váltása$Ngyorsbillentyű: T">képek',
 	"ct_csel": 'kijelölés CTRL és SHIFT gombokkal rács nézetben">kijelölés',

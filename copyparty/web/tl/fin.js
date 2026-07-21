@@ -223,7 +223,7 @@ Ls.fin = {
 	"cl_rcm": "hiiren pikavalikko",
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 kuvanäkymä',
+	"ct_grid": 'kuvanäkymä',
 	"ct_ttips": '◔ ◡ ◔">vihjelaatikot',
 	"ct_thumb": 'valitse kuvakkeiden / pienoiskuvien välillä kuvanäkymässä $NPikanäppäin: T">pienoiskuvat',
 	"ct_csel": 'käytä CTRL ja SHIFT tiedostojen valintaan kuvanäkymässä">valitse',

@@ -226,7 +226,7 @@ Ls.pol = {
 	"cl_rcm": "menu kontekstowe", //m
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 siatka',
+	"ct_grid": 'siatka',
 	"ct_ttips": '◔ ◡ ◔">podpowiedzi',
 	"ct_thumb": 'w widoku siatki, przełącz ikony i miniaturki$NSkrót: T">miniaturki',
 	"ct_csel": 'użyj CTRL i SHIFT do wybierania plików w widoku siatki">wybierz',

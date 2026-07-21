@@ -223,7 +223,7 @@ Ls.epo = {
 	"cl_rcm": "dekstra-klaka menuo",
 	"cl_gauto": "aŭto田",
 
-	"ct_grid": '田 krado',
+	"ct_grid": 'krado',
 	"ct_ttips": '◔ ◡ ◔">ŝpruchelpiloj',
 	"ct_thumb": 'dum krado-vido, baskuli montradon de simboloj aŭ bildetoj$NFulmoklavo: T">bildetoj',
 	"ct_csel": 'uzi STIR kaj MAJ por elekti dosierojn en krado-vido">elekto',

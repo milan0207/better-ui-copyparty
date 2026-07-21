@@ -222,7 +222,7 @@ Ls.spa = {
 	"cl_rcm": "menú contextual", //m
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 cuadrícula',
+	"ct_grid": 'cuadrícula',
 	"ct_ttips": '◔ ◡ ◔">tooltips',
 	"ct_thumb": 'en vista de cuadrícula, alternar iconos o miniaturas$NAtajo: T">miniaturas',
 	"ct_csel": 'usa CTRL y SHIFT para seleccionar archivos en la vista de cuadrícula">sel',

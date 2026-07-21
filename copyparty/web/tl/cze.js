@@ -227,7 +227,7 @@ Ls.cze = {
 	"cl_rcm": "kontextová nabídka", //m
 	"cl_gauto": "auto mřížka", //m
 
-	"ct_grid": '田 mřížka',
+	"ct_grid": 'mřížka',
 	"ct_ttips": '◔ ◡ ◔">nápovědy',
 	"ct_thumb": 'v zobrazení mřížky přepnout ikony nebo náhledy$NKlávesová zkratka: T">náhledy',
 	"ct_csel": 'použít CTRL a SHIFT pro výběr souborů v zobrazení mřížky">výběr',

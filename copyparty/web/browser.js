@@ -233,7 +233,7 @@ if (1)
 		"cl_rcm": "right-click menu",
 		"cl_gauto": "autogrid",
 
-		"ct_grid": '田 the grid',
+		"ct_grid": 'the grid',
 		"ct_ttips": '◔ ◡ ◔">tooltips',
 		"ct_thumb": 'in grid-view, toggle icons or thumbnails$NHotkey: T">thumbs',
 		"ct_csel": 'use CTRL and SHIFT for file selection in grid-view">sel',
@@ -963,8 +963,8 @@ x.parentNode.insertBefore(mknod('div', null,
 	var o = mknod('div');
 	o.innerHTML = (
 		'<div id="drops">\n' +
-		'	<div class="dropdesc" id="up_zd"><div>🚀 ' + L.udt_up + '<br /><span></span><div>🚀<b>' + L.udt_up + '</b></div><div><b>' + L.udt_up + '</b>🚀</div></div></div>\n' +
-		'	<div class="dropdesc" id="srch_zd"><div>🔎 ' + L.udt_srch + '<br /><span></span><div>🔎<b>' + L.udt_srch + '</b></div><div><b>' + L.udt_srch + '</b>🔎</div></div></div>\n' +
+		'	<div class="dropdesc" id="up_zd"><div> ' + L.udt_up + '<br /><span></span><div><b>' + L.udt_up + '</b></div><div><b>' + L.udt_up + '</b></div></div></div>\n' +
+		'	<div class="dropdesc" id="srch_zd"><div> ' + L.udt_srch + '<br /><span></span><div><b>' + L.udt_srch + '</b></div><div><b>' + L.udt_srch + '</b></div></div></div>\n' +
 		'	<div class="dropzone" id="up_dz" v="up_zd"></div>\n' +
 		'	<div class="dropzone" id="srch_dz" v="srch_zd"></div>\n' +
 		'</div>'
@@ -1085,15 +1085,15 @@ ebi('op_cfg').innerHTML = (
 // navpane
 ebi('tree').innerHTML = (
 	'<div id="treeh">\n' +
-	'	<a href="#" id="detree" tt="' + L.tt_detree + '">🍞...</a>\n' +
+	'	<a href="#" id="detree" tt="' + L.tt_detree + '">...</a>\n' +
 	'	<a href="#" class="btn" step="2" id="twobytwo" tt="Hotkey: D">+</a>\n' +
 	'	<a href="#" class="btn" step="-2" id="twig" tt="Hotkey: A">&ndash;</a>\n' +
-	'	<a href="#" class="btn" id="visdir" tt="' + L.tt_visdir + '">🎯</a>\n' +
-	'	<a href="#" class="tgl btn" id="filetree" tt="' + L.tt_ftree + '">📃</a>\n' +
-	'	<a href="#" class="tgl btn" id="parpane" tt="' + L.tt_pdock + '">📌</a>\n' +
+	'	<a href="#" class="btn" id="visdir" tt="' + L.tt_visdir + '"></a>\n' +
+	'	<a href="#" class="tgl btn" id="filetree" tt="' + L.tt_ftree + '"></a>\n' +
+	'	<a href="#" class="tgl btn" id="parpane" tt="' + L.tt_pdock + '"></a>\n' +
 	'	<a href="#" class="tgl btn" id="dyntree" tt="' + L.tt_dynt + '">a</a>\n' +
 	'	<a href="#" class="tgl btn" id="wraptree" tt="' + L.tt_wrap + '">↵</a>\n' +
-	'	<a href="#" class="tgl btn" id="hovertree" tt="' + L.tt_hover + '">👀</a>\n' +
+	'	<a href="#" class="tgl btn" id="hovertree" tt="' + L.tt_hover + '"></a>\n' +
 	'</div>\n' +
 	'<ul id="docul"></ul>\n' +
 	'<ul class="ntree" id="treepar"></ul>\n' +

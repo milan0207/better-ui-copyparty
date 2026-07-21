@@ -223,7 +223,7 @@ Ls.ita = {
 	"cl_rcm": "menu contestuale", //m
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 griglia',
+	"ct_grid": 'griglia',
 	"ct_ttips": '◔ ◡ ◔">tooltip',
 	"ct_thumb": 'nella vista griglia, alterna icone o miniature$NTasto rapido: T">miniature',
 	"ct_csel": 'usa CTRL e SHIFT per la selezione file nella vista griglia">sel',

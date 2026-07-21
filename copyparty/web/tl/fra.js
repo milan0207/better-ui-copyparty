@@ -223,7 +223,7 @@ Ls.fra = {
 	"cl_rcm": "menu contextuel", //m
 	"cl_gauto": "auto-grille", //m
 
-	"ct_grid": '田 grille',
+	"ct_grid": 'grille',
 	"ct_ttips": '◔ ◡ ◔">infobulles',
 	"ct_thumb": 'vue en grille, activer les icônes ou les miniatures$NHotkey: T">minia',
 	"ct_csel": 'utiliser CTRL et MAJ pour selectioner des fichiers en vue en grille">sel',

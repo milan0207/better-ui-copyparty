@@ -223,7 +223,7 @@ Ls.swe = {
 	"cl_rcm": "högerklicksmeny", //m
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 rutnätet',
+	"ct_grid": 'rutnätet',
 	"ct_ttips": '◔ ◡ ◔">tips',
 	"ct_thumb": 'växla mellan miniatyrer och ikoner i rutnätsvyn$NSnabbtangent: T">miniatyrer',
 	"ct_csel": 'använd CTRL och SKIFT för urval av filer i rutnätsvyn">val',

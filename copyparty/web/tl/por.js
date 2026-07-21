@@ -223,7 +223,7 @@ Ls.por = {
 	"cl_rcm": "menu de clique direito",
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 a grade',
+	"ct_grid": 'a grade',
 	"ct_ttips": '◔ ◡ ◔">dicas de ferramentas',
 	"ct_thumb": 'na visualização de grade, alternar entre ícones ou miniaturas$NHotkey: T">miniaturas',
 	"ct_csel": 'usar CTRL e SHIFT para seleção de arquivo na visualização de grade">sel',

@@ -223,7 +223,7 @@ Ls.tur = {
 	"cl_rcm": "sağ tık menüsü", //m
 	"cl_gauto": "otomatik田", //m
 
-	"ct_grid": '田 ızgara',
+	"ct_grid": 'ızgara',
 	"ct_ttips": '◔ ◡ ◔">ipuçları',
 	"ct_thumb": 'ızgara görünümünde, simgeler ve küçük resimler arasında geçiş yapın$NKısayol: T">küçük resimler',
 	"ct_csel": 'ızgara görünümünde dosya seçimi için CTRL ve SHIFT tuşlarını kullanın">seç',

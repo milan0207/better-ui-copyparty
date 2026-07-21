@@ -220,7 +220,7 @@ Ls.nor = {
 	"cl_rcm": "høyreklikkmeny",
 	"cl_gauto": "auto田",
 
-	"ct_grid": '田 ikoner',
+	"ct_grid": 'ikoner',
 	"ct_ttips": 'vis hjelpetekst ved å holde musen over ting">tips',
 	"ct_thumb": 'vis miniatyrbilder istedenfor ikoner$NSnarvei: T">bilder',
 	"ct_csel": 'bruk tastene CTRL og SHIFT for markering av filer i ikonvisning">merk',

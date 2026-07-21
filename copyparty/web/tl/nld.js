@@ -223,7 +223,7 @@ Ls.nld = {
 	"cl_rcm": "Rechtermuisknopmenu", //m
 	"cl_gauto": "auto田", //m
 
-	"ct_grid": '田 grid',
+	"ct_grid": 'grid',
 	"ct_ttips": '◔ ◡ ◔">tooltips',
 	"ct_thumb": 'In grid-overzicht, wissel tussen iconen of thumbnails$NHotkey: T">thumbs',
 	"ct_csel": 'Gebruik CTRL en SHIFT voor de bestand selectie in grid-overzicht>sel',

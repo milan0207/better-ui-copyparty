@@ -223,7 +223,7 @@ Ls.chi = {
 	"cl_rcm": "右键菜单",
 	"cl_gauto": "自动网格", //m
 
-	"ct_grid": '田 网格',
+	"ct_grid": '网格',
 	"ct_ttips": '◔ ◡ ◔">提示',
 	"ct_thumb": '在网格视图中，切换图标或缩略图$N快捷键: T">缩略',
 	"ct_csel": '在网格视图中，允许使用 CTRL 和 SHIFT 进行文件选择">选择',
