@@ -133,6 +133,18 @@ if (1)
 		"ot_u2w": 'up2k: upload files with resume support (close your browser and drop the same files in later)$N$Nmultithreaded, and file timestamps are preserved, but it uses more CPU than [🎈]&nbsp; (the basic uploader)<br /><br />during uploads, this icon becomes a progress indicator!',
 		"ot_noie": 'Please use Chrome / Firefox / Edge',
 
+		"ez_home": "Home",
+		"ez_folder": "Folder",
+		"ez_upload": "Upload",
+		"ez_zip": "Download all",
+		"ez_dl": "Download",
+		"ez_expert": "Expert mode",
+		"ez_easy": "Easy mode",
+		"ez_empty": "This folder is empty",
+		"ez_zipping": "Preparing your download...",
+		"ez_updone": "Upload finished",
+		"ez_enoup": "Uploads are not available here",
+
 		"ff_ph": "filter",
 		"ff_tt": "hide files in this folder that don't match$NHotkey: Esc to clear",
 
@@ -10067,6 +10079,9 @@ function reload_browser() {
 	filecols.set_style();
 	if (ffilter)  // may not exist yet during early init
 		ffilter.reset();
+
+	if (window.ezmode && ezmode.on)
+		ezmode.render();
 
 	var parts = get_evpath().split('/'),
 		rm = ebi('entree'),
