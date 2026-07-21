@@ -141,6 +141,14 @@ if (1)
 		"ez_expert": "Expert mode",
 		"ez_easy": "Easy mode",
 		"ez_empty": "This folder is empty",
+		"ez_download": "Download",
+		"ez_zipsel": "Download as zip",
+		"ez_rename": "Rename",
+		"ez_delete": "Delete",
+		"ez_clear": "Clear",
+		"ez_select": "Select",
+		"ez_nsel": "{0} selected",
+		"ez_noprev": "No preview available",
 		"ez_zipping": "Preparing your download...",
 		"ez_updone": "Upload finished",
 		"ez_enoup": "Uploads are not available here",
@@ -404,9 +412,9 @@ if (1)
 		"fs_sc": "share the folder you're in",
 		"fs_ss": "share the selected files",
 		"fs_just1d": "you cannot select more than one folder,\nor mix files and folders in one selection",
-		"fs_abrt": "❌ abort",
+		"fs_abrt": "abort",
 		"fs_rand": "🎲 rand.name",
-		"fs_go": "✅ create share",
+		"fs_go": "create share",
 		"fs_name": "name",
 		"fs_src": "source",
 		"fs_pwd": "passwd",
@@ -4311,7 +4319,7 @@ var fileman = (function () {
 
 		html = html.concat([
 			'<button id="rn_cancel" tt="' + L.frt_abrt + '</button>',
-			'<button id="rn_apply">✅ ' + L.frb_apply + '</button>',
+			'<button id="rn_apply">' + L.frb_apply + '</button>',
 			'<a id="rn_adv" class="tgl btn" href="#" tt="' + L.fr_adv + '</a>',
 			'<a id="rn_case" class="tgl btn" href="#" tt="' + L.fr_case + '</a>',
 			'<a id="rn_win" class="tgl btn" href="#" tt="' + L.fr_win + '</a>',
@@ -4325,8 +4333,8 @@ var fileman = (function () {
 			'<code>n.d=</code><input type="text" id="rn_n_d" placeholder="1" ' + NOAC + ' /> &nbsp;',
 			'<code>n.s=</code><input type="text" id="rn_n_s" placeholder="1" ' + NOAC + ' />',
 			'</td></tr>',
-			'<button id="rn_pdel">❌ ' + L.fr_pdel + '</button>',
-			'<button id="rn_pnew">💾 ' + L.fr_pnew + '</button>',
+			'<button id="rn_pdel">' + L.fr_pdel + '</button>',
+			'<button id="rn_pnew">' + L.fr_pnew + '</button>',
 			'</td></tr>',
 			'</table></div>'
 		]);
@@ -4840,7 +4848,7 @@ var fileman = (function () {
 				'<div>',
 				'<button id="rn_cancel" tt="' + L.frt_abrt + '</button>',
 				'<button id="rn_skip">⏭ ' + L.fp_skip + '</button>',
-				'<button id="rn_apply">✅ ' + L.fp_apply + '</button>',
+				'<button id="rn_apply">' + L.fp_apply + '</button>',
 				' &nbsp; src: ' + esc(r.clip[0].replace(/[^/]+$/, '')),
 				'</div>',
 				'<p id="cnmt"></p>',
@@ -6743,7 +6751,7 @@ var search_ui = (function () {
 
 		var html = mk_files_header(tagord), seen = {};
 		html.push('<tbody>');
-		html.push('<tr class="srch_hdr"><td>-</td><td><a href="#" id="unsearch"><big style="font-weight:bold">[❌] ' + L.sl_close + '</big></a> -- ' + L.sl_hits.format(res.hits.length) + (res.trunc ? ' -- <a href="#" id="moar">' + L.sl_moar + '</a>' : '') + '</td></tr>');
+		html.push('<tr class="srch_hdr"><td>-</td><td><a href="#" id="unsearch"><big style="font-weight:bold">' + L.sl_close + '</big></a> -- ' + L.sl_hits.format(res.hits.length) + (res.trunc ? ' -- <a href="#" id="moar">' + L.sl_moar + '</a>' : '') + '</td></tr>');
 
 		for (var a = 0; a < res.hits.length; a++) {
 			var r = res.hits[a],

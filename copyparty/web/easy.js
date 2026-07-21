@@ -1,22 +1,28 @@
-// easy mode: a deliberately small browse / upload / download surface for
-// people who do not want copyparty's full control panel.
+// easy mode: a smaller, friendlier front-end over copyparty's own engine.
 //
-// this is a separate front-end, not a separate backend: navigation still
-// goes through treectl, uploads still go through up2k (so resumable,
-// multithreaded, hash-verified uploads all keep working), and archives
-// still use the server's ?zip. only the presentation and the amount of
-// exposed surface differ.
+// this is presentation only. selection is stored on the (hidden) #files
+// rows and handed to msel, so rename / delete / zip / multi-download are
+// the exact same code paths the expert ui uses -- easy mode never
+// reimplements them, it just offers them in fewer, larger buttons.
 
 var ezmode = (function () {
 	var r = {},
 		box = null,
+		ovl = null,
+		items = [],
+		shown = -1,
 		upwatch = null,
 		upactive = false;
 
 	r.on = false;
 
 	function esc(s) {
-		return (s + '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+		return (s + '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	}
+
+	function tl(k, fb) {
+		return L[k] || fb;
 	}
 
 	function fmtsz(v) {
@@ -33,31 +39,80 @@ var ezmode = (function () {
 		return (i ? n.toFixed(n < 10 ? 1 : 0) : n) + ' ' + u[i];
 	}
 
+	function ext(name) {
+		return (name.indexOf('.') + 1 ? name.split('.').pop() : '').toLowerCase();
+	}
+
 	function kind(name) {
-		var e = (name.indexOf('.') + 1 ? name.split('.').pop() : '').toLowerCase();
+		var e = ext(name);
 		if (/^(jpe?g|png|gif|webp|bmp|svg|avif|jxl|heic)$/.test(e)) return 'img';
 		if (/^(mp3|flac|ogg|opus|m4a|wav|aac|wma)$/.test(e)) return 'audio';
 		if (/^(mp4|mkv|webm|mov|avi|m4v|wmv)$/.test(e)) return 'video';
 		if (/^(pdf)$/.test(e)) return 'pdf';
 		if (/^(zip|rar|7z|tar|gz|xz|bz2|zst)$/.test(e)) return 'zip';
-		if (/^(txt|md|log|json|xml|csv|ini|cfg|yml|yaml|html?|js|css|py)$/.test(e)) return 'text';
+		if (/^(txt|md|log|json|xml|csv|ini|cfg|yml|yaml|html?|js|css|py|sh|c|h|cpp|rs|go)$/.test(e)) return 'text';
 		return 'file';
 	}
 
-	// copyparty's own permission list; easy mode only ever offers what the
-	// server already allows, it never invents access
+	// only ever offer what the server already permits
 	function may(p) {
 		return typeof perms !== 'undefined' && has(perms, p);
 	}
 
-	function nav(href) {
-		treectl.reqls(href, true);
+	// ---- listing -------------------------------------------------------
+
+	// read from the #files table, not treectl.lsc: lsc is only filled by
+	// the ajax path (so it is empty on first load) and the table already
+	// reflects the active sort order
+	function scan() {
+		var rows = QSA('#files tbody tr'),
+			out = [];
+
+		for (var a = 0, aa = rows.length; a < aa; a++) {
+			var td = rows[a].cells[1],
+				link = td && td.getElementsByTagName('a')[0];
+
+			if (!link)
+				continue;
+
+			var href = link.getAttribute('href') || '';
+			out.push({
+				tr: rows[a],
+				href: href,
+				name: link.textContent,
+				sz: (rows[a].cells[2] || {}).textContent,
+				dir: href.split('?')[0].slice(-1) == '/'
+			});
+		}
+		return out;
 	}
+
+	function selected() {
+		var o = [];
+		for (var a = 0; a < items.length; a++)
+			if (items[a].tr.className.indexOf('sel') + 1)
+				o.push(items[a]);
+		return o;
+	}
+
+	// push our selection into copyparty's own selection model
+	function sync() {
+		msel.origin_id(null);
+		msel.selui();
+		paint();
+	}
+
+	function pick(i, on) {
+		clmod(items[i].tr, 'sel', on === undefined ? 't' : on);
+	}
+
+	// ---- rendering -----------------------------------------------------
 
 	r.crumbs = function () {
 		var parts = get_evpath().split('/'),
 			link = '',
-			h = ['<button class="ez_crumb" data-h="' + esc(SR + '/') + '">' + L.ez_home + '</button>'];
+			h = ['<button class="ez_crumb" data-h="' + esc(SR + '/') + '">' +
+				esc(tl('ez_home', 'Home')) + '</button>'];
 
 		for (var a = 1; a < parts.length - 1; a++) {
 			link += parts[a] + '/';
@@ -68,138 +123,291 @@ var ezmode = (function () {
 		return h.join('');
 	};
 
-	// read the listing from the #files table rather than treectl.lsc:
-	// lsc is only populated by the ajax path, so it is empty on the
-	// initial server-rendered load, and the table already reflects the
-	// active sort order
-	function scan() {
-		var rows = QSA('#files tbody tr'),
-			dirs = [], files = [];
-
-		for (var a = 0, aa = rows.length; a < aa; a++) {
-			var td = rows[a].cells[1],
-				link = td && td.getElementsByTagName('a')[0];
-
-			if (!link)
-				continue;
-
-			var href = link.getAttribute('href') || '',
-				o = {
-					href: href,
-					name: link.textContent,
-					sz: (rows[a].cells[2] || {}).textContent
-				};
-
-			(href.split('?')[0].slice(-1) == '/' ? dirs : files).push(o);
-		}
-		return { dirs: dirs, files: files };
-	}
-
 	r.render = function () {
 		if (!r.on || !box)
 			return;
 
-		var lsc = scan(),
-			dirs = lsc.dirs,
-			files = lsc.files,
-			h = [];
+		items = scan();
+		var h = [];
 
 		h.push('<div class="ez_bar">');
 		h.push('<div class="ez_path">' + r.crumbs() + '</div>');
 		h.push('<div class="ez_acts">');
 		if (may('write'))
-			h.push('<button class="ez_btn ez_pri" id="ez_up">' +
-				'<i class="ez_i ez_i_up"></i>' + esc(L.ez_upload) + '</button>');
+			h.push('<button class="ez_btn ez_pri" id="ez_up"><i class="ez_i ez_i_up"></i>' +
+				esc(tl('ez_upload', 'Upload')) + '</button>');
 		if (typeof have_zip === 'undefined' || have_zip)
-			h.push('<button class="ez_btn" id="ez_zip">' +
-				'<i class="ez_i ez_i_zip"></i>' + esc(L.ez_zip) + '</button>');
-		h.push('<button class="ez_btn ez_ghost" id="ez_expert">' + esc(L.ez_expert) + '</button>');
+			h.push('<button class="ez_btn" id="ez_zipall"><i class="ez_i ez_i_zip"></i>' +
+				esc(tl('ez_zip', 'Download all')) + '</button>');
+		h.push('<button class="ez_btn ez_ghost" id="ez_expert">' +
+			esc(tl('ez_expert', 'Expert mode')) + '</button>');
 		h.push('</div></div>');
 
-		if (!dirs.length && !files.length)
-			h.push('<div class="ez_empty">' + esc(L.ez_empty) + '</div>');
+		// contextual action bar; visibility is toggled in paint()
+		h.push('<div class="ez_selbar" id="ez_selbar">');
+		h.push('<span class="ez_seln" id="ez_seln"></span>');
+		h.push('<button class="ez_btn" id="ez_dl"><i class="ez_i ez_i_dl"></i>' +
+			esc(tl('ez_download', 'Download')) + '</button>');
+		if (typeof have_zip === 'undefined' || have_zip)
+			h.push('<button class="ez_btn" id="ez_zipsel"><i class="ez_i ez_i_zip"></i>' +
+				esc(tl('ez_zipsel', 'Download as zip')) + '</button>');
+		if (may('move'))
+			h.push('<button class="ez_btn" id="ez_ren"><i class="ez_i ez_i_pen"></i>' +
+				esc(tl('ez_rename', 'Rename')) + '</button>');
+		if (may('delete'))
+			h.push('<button class="ez_btn ez_dang" id="ez_del"><i class="ez_i ez_i_trash"></i>' +
+				esc(tl('ez_delete', 'Delete')) + '</button>');
+		h.push('<button class="ez_btn ez_ghost" id="ez_clr">' +
+			esc(tl('ez_clear', 'Clear')) + '</button>');
+		h.push('</div>');
+
+		if (!items.length)
+			h.push('<div class="ez_empty">' + esc(tl('ez_empty', 'This folder is empty')) + '</div>');
 
 		h.push('<div class="ez_grid">');
+		for (var a = 0; a < items.length; a++) {
+			var it = items[a],
+				nm = it.dir ? it.name.replace(/\/$/, '') : it.name;
 
-		for (var a = 0; a < dirs.length; a++) {
-			var d = dirs[a],
-				nm = d.name.replace(/\/$/, '');
-
-			h.push('<button class="ez_tile ez_dir" data-h="' + esc(d.href) + '">' +
-				'<i class="ez_i ez_i_folder"></i>' +
+			h.push('<div class="ez_tile ' + (it.dir ? 'ez_dir' : 'ez_file') + '" data-i="' + a + '">' +
+				'<button class="ez_chk" data-i="' + a + '" title="' +
+				esc(tl('ez_select', 'Select')) + '"></button>' +
+				'<i class="ez_i ez_i_' + (it.dir ? 'folder' : kind(nm)) + '"></i>' +
 				'<span class="ez_nm">' + esc(nm) + '</span>' +
-				'<span class="ez_meta">' + esc(L.ez_folder) + '</span>' +
-				'</button>');
-		}
-
-		for (var a = 0; a < files.length; a++) {
-			var f = files[a],
-				nm = f.name;
-
-			h.push('<div class="ez_tile ez_file" data-h="' + esc(f.href) + '">' +
-				'<i class="ez_i ez_i_' + kind(nm) + '"></i>' +
-				'<span class="ez_nm">' + esc(nm) + '</span>' +
-				'<span class="ez_meta">' + esc(fmtsz(f.sz)) + '</span>' +
-				'<a class="ez_dl" href="' + esc(f.href) + '?dl" download title="' +
-				esc(L.ez_dl) + '"><i class="ez_i ez_i_dl"></i></a>' +
+				'<span class="ez_meta">' + esc(it.dir ? tl('ez_folder', 'Folder') : fmtsz(it.sz)) + '</span>' +
 				'</div>');
 		}
-
 		h.push('</div>');
+
 		box.innerHTML = h.join('');
 		r.wire();
+		paint();
 	};
 
+	// reflect selection state without rebuilding the grid
+	function paint() {
+		var tiles = QSA('#ez .ez_tile'),
+			n = 0;
+
+		for (var a = 0; a < tiles.length; a++) {
+			var i = parseInt(tiles[a].getAttribute('data-i'), 10),
+				on = items[i] && items[i].tr.className.indexOf('sel') + 1;
+
+			clmod(tiles[a], 'on', on);
+			if (on)
+				n++;
+		}
+
+		clmod(box, 'picking', n);
+		var bar = ebi('ez_selbar');
+		if (bar)
+			clmod(bar, 'act', n);
+
+		var lbl = ebi('ez_seln');
+		if (lbl)
+			lbl.textContent = tl('ez_nsel', '{0} selected').format(n);
+
+		var ren = ebi('ez_ren');
+		if (ren)
+			ren.disabled = n != 1;
+	}
+
 	r.wire = function () {
-		var els = QSA('#ez .ez_crumb, #ez .ez_dir');
-		for (var a = 0; a < els.length; a++)
+		var a, els;
+
+		els = QSA('#ez .ez_crumb');
+		for (a = 0; a < els.length; a++)
 			els[a].onclick = function (e) {
 				ev(e);
-				nav(this.getAttribute('data-h'));
+				treectl.reqls(this.getAttribute('data-h'), true);
 			};
 
-		els = QSA('#ez .ez_file');
-		for (var a = 0; a < els.length; a++)
+		// checkbox toggles selection; the tile body opens
+		els = QSA('#ez .ez_chk');
+		for (a = 0; a < els.length; a++)
 			els[a].onclick = function (e) {
-				// the per-tile download link handles itself
-				if (e.target.closest('.ez_dl'))
-					return;
-
 				ev(e);
-				location.href = this.getAttribute('data-h');
+				pick(parseInt(this.getAttribute('data-i'), 10));
+				sync();
+			};
+
+		els = QSA('#ez .ez_tile');
+		for (a = 0; a < els.length; a++)
+			els[a].onclick = function (e) {
+				var i = parseInt(this.getAttribute('data-i'), 10);
+
+				// ctrl/shift/an active selection means "keep picking"
+				if (ctrl(e) || e.shiftKey || box.className.indexOf('picking') + 1) {
+					ev(e);
+					pick(i);
+					return sync();
+				}
+				ev(e);
+				r.open(i);
 			};
 
 		var b = ebi('ez_up');
-		if (b)
-			b.onclick = function (e) { ev(e); r.upload(); };
+		if (b) b.onclick = function (e) { ev(e); r.upload(); };
 
-		b = ebi('ez_zip');
-		if (b)
-			b.onclick = function (e) { ev(e); r.zip(); };
+		b = ebi('ez_zipall');
+		if (b) b.onclick = function (e) { ev(e); r.zipall(); };
 
 		b = ebi('ez_expert');
-		if (b)
-			b.onclick = function (e) { ev(e); r.set(false); };
+		if (b) b.onclick = function (e) { ev(e); r.set(false); };
+
+		// these delegate straight to the expert implementations
+		b = ebi('ez_dl');
+		if (b) b.onclick = function (e) { ev(e); ebi('seldl').click(); };
+
+		b = ebi('ez_zipsel');
+		if (b) b.onclick = function (e) { ev(e); ebi('selzip').click(); };
+
+		b = ebi('ez_ren');
+		if (b) b.onclick = function (e) { ev(e); fileman.rename(e); };
+
+		b = ebi('ez_del');
+		if (b) b.onclick = function (e) { ev(e); fileman.delete(e); };
+
+		b = ebi('ez_clr');
+		if (b) b.onclick = function (e) {
+			ev(e);
+			for (var i = 0; i < items.length; i++)
+				pick(i, 0);
+			sync();
+		};
 	};
 
-	// reuse up2k's own file input so uploads stay resumable and verified
+	// ---- in-page viewer ------------------------------------------------
+
+	function mkovl() {
+		ovl = mknod('div', 'ezov');
+		ovl.innerHTML =
+			'<div class="ezov_top">' +
+			'<span class="ezov_nm" id="ezov_nm"></span>' +
+			'<a class="ezov_b" id="ezov_dl" download><i class="ez_i ez_i_dl"></i></a>' +
+			'<button class="ezov_b" id="ezov_x"><i class="ez_i ez_i_x"></i></button>' +
+			'</div>' +
+			'<button class="ezov_nav ezov_prev" id="ezov_p"></button>' +
+			'<div class="ezov_body" id="ezov_body"></div>' +
+			'<button class="ezov_nav ezov_next" id="ezov_n"></button>';
+
+		document.body.appendChild(ovl);
+
+		ebi('ezov_x').onclick = r.close;
+		ebi('ezov_p').onclick = function (e) { ev(e); r.step(-1); };
+		ebi('ezov_n').onclick = function (e) { ev(e); r.step(1); };
+		ovl.onclick = function (e) {
+			if (e.target === ovl)
+				r.close(e);
+		};
+	}
+
+	r.open = function (i) {
+		var it = items[i];
+		if (!it)
+			return;
+
+		if (it.dir)
+			return treectl.reqls(it.href, true);
+
+		if (!ovl)
+			mkovl();
+
+		shown = i;
+		clmod(ovl, 'act', 1);
+		clmod(document.documentElement, 'ezov', 1);
+
+		var nm = it.name,
+			body = ebi('ezov_body'),
+			k = kind(nm),
+			url = it.href;
+
+		ebi('ezov_nm').textContent = nm;
+		ebi('ezov_dl').setAttribute('href', url + '?dl');
+		body.innerHTML = '';
+
+		if (k == 'img')
+			body.innerHTML = '<img src="' + esc(url) + '" alt="' + esc(nm) + '" />';
+		else if (k == 'video')
+			body.innerHTML = '<video src="' + esc(url) + '" controls autoplay playsinline></video>';
+		else if (k == 'audio')
+			body.innerHTML = '<div class="ezov_au"><i class="ez_i ez_i_audio"></i>' +
+				'<audio src="' + esc(url) + '" controls autoplay></audio></div>';
+		else if (k == 'pdf')
+			body.innerHTML = '<iframe src="' + esc(url) + '"></iframe>';
+		else if (k == 'text') {
+			body.innerHTML = '<pre class="ezov_txt">...</pre>';
+			// ?raw skips the markdown/code viewer and gives us the bytes
+			var xhr = new XHR();
+			xhr.open('GET', addq(url, 'raw'), true);
+			xhr.onload = function () {
+				var pre = QS('#ezov_body .ezov_txt');
+				if (pre)
+					pre.textContent = this.responseText;
+			};
+			xhr.onerror = function () {
+				var pre = QS('#ezov_body .ezov_txt');
+				if (pre)
+					pre.textContent = tl('ez_noprev', 'No preview available');
+			};
+			xhr.send();
+		}
+		else
+			body.innerHTML = '<div class="ezov_no"><i class="ez_i ez_i_file"></i><span>' +
+				esc(tl('ez_noprev', 'No preview available')) + '</span></div>';
+
+		// only offer prev/next across previewable files
+		var nfile = 0;
+		for (var a = 0; a < items.length; a++)
+			if (!items[a].dir)
+				nfile++;
+
+		ebi('ezov_p').style.display = ebi('ezov_n').style.display = nfile > 1 ? '' : 'none';
+	};
+
+	r.step = function (d) {
+		if (shown < 0)
+			return;
+
+		for (var a = shown + d; a >= 0 && a < items.length; a += d)
+			if (!items[a].dir)
+				return r.open(a);
+	};
+
+	r.close = function (e) {
+		ev(e);
+		if (!ovl)
+			return;
+
+		// stop any media that is still playing
+		var m = QS('#ezov_body video, #ezov_body audio');
+		if (m) {
+			try { m.pause(); } catch (ex) { }
+		}
+		ebi('ezov_body').innerHTML = '';
+		clmod(ovl, 'act');
+		clmod(document.documentElement, 'ezov');
+		shown = -1;
+	};
+
+	// ---- actions -------------------------------------------------------
+
+	// reuse up2k's own input so uploads stay resumable and verified
 	r.upload = function () {
 		var ins = QSA('#u2form input[type="file"]:not([webkitdirectory])');
 		if (!ins.length)
-			return toast.err(5, L.ez_enoup);
+			return toast.err(5, tl('ez_enoup', 'Uploads are not available here'));
 
 		ins[ins.length - 1].click();
 		r.watch();
 	};
 
-	r.zip = function () {
-		var u = get_evpath() + (window.dk ? '?k=' + dk + '&' : '?') + 'zip';
-		toast.inf(4, L.ez_zipping);
-		location.href = u;
+	r.zipall = function () {
+		toast.inf(4, tl('ez_zipping', 'Preparing your download...'));
+		location.href = get_evpath() + (window.dk ? '?k=' + dk + '&' : '?') + 'zip';
 	};
 
-	// up2k has no completion event, so watch its queues and report the
-	// active -> idle transition
+	// up2k has no completion event, so watch its queues for active -> idle
 	r.watch = function () {
 		if (upwatch)
 			return;
@@ -224,10 +432,12 @@ var ezmode = (function () {
 			upactive = false;
 			clearInterval(upwatch);
 			upwatch = null;
-			toast.ok(6, L.ez_updone);
+			toast.ok(6, tl('ez_updone', 'Upload finished'));
 			treectl.reqls(get_evpath(), false);
 		}, 700);
 	};
+
+	// ---- mode ----------------------------------------------------------
 
 	r.set = function (v) {
 		r.on = !!v;
@@ -241,14 +451,31 @@ var ezmode = (function () {
 			}
 			r.render();
 		}
-		else if (box) {
-			box.innerHTML = '';
+		else {
+			r.close();
+			if (box)
+				box.innerHTML = '';
 		}
 	};
 
 	r.toggle = function (e) {
 		ev(e);
 		r.set(!r.on);
+	};
+
+	r.key = function (e) {
+		if (!r.on)
+			return;
+
+		var k = e.key || '';
+		if (shown >= 0) {
+			if (k == 'Escape' || k == 'Esc')
+				return r.close(e);
+			if (k == 'ArrowRight')
+				return r.step(1);
+			if (k == 'ArrowLeft')
+				return r.step(-1);
+		}
 	};
 
 	return r;
@@ -266,6 +493,8 @@ var ezmode = (function () {
 	var ops = ebi('ops');
 	if (ops)
 		ops.appendChild(a);
+
+	document.addEventListener('keydown', ezmode.key);
 
 	if (sread('ezmode') == 'y')
 		ezmode.set(true);

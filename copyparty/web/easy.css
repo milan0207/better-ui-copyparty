@@ -316,3 +316,304 @@ html.ez #acc_info a:hover {
 html.ez #ez {
 	padding-top: 3em;
 }
+
+/* ---- selection ---- */
+
+.ez_chk {
+	position: absolute;
+	top: .5em;
+	left: .5em;
+	width: 1.35em;
+	height: 1.35em;
+	padding: 0;
+	border: 1.5px solid var(--ez-fg-dim);
+	border-radius: 5px;
+	background: var(--ez-bg);
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity .1s;
+}
+.ez_tile:hover .ez_chk,
+#ez.picking .ez_chk,
+.ez_chk:focus-visible {
+	opacity: 1;
+}
+.ez_tile.on .ez_chk {
+	background: var(--ez-accent);
+	border-color: var(--ez-accent);
+	opacity: 1;
+}
+.ez_tile.on .ez_chk::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-color: var(--ez-accent-fg);
+	-webkit-mask: var(--ez-check) no-repeat center / 78%;
+	mask: var(--ez-check) no-repeat center / 78%;
+}
+.ez_tile.on {
+	border-color: var(--ez-accent);
+	background: var(--ez-surface-h);
+}
+
+/* ---- contextual action bar ---- */
+
+.ez_selbar {
+	display: none;
+	align-items: center;
+	gap: .5em;
+	flex-wrap: wrap;
+	background: var(--ez-surface);
+	border: 1px solid var(--ez-border);
+	border-radius: var(--ez-radius);
+	padding: .6em .75em;
+	margin: 0 0 1.25em;
+}
+.ez_selbar.act {
+	display: flex;
+}
+.ez_seln {
+	font-weight: 500;
+	margin-right: .35em;
+}
+.ez_btn.ez_dang:hover {
+	background: #b91c1c;
+	border-color: #b91c1c;
+	color: #fff;
+}
+.ez_btn[disabled] {
+	opacity: .4;
+	pointer-events: none;
+}
+
+/* ---- in-page viewer ---- */
+
+html.ezov,
+html.ezov body {
+	overflow: hidden;
+}
+#ezov {
+	display: none;
+	position: fixed;
+	inset: 0;
+	z-index: 80;
+	background: rgba(6, 8, 12, .92);
+	align-items: center;
+	justify-content: center;
+	padding: 3.5em 1em 1.5em;
+}
+#ezov.act {
+	display: flex;
+}
+.ezov_top {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3.2em;
+	display: flex;
+	align-items: center;
+	gap: .5em;
+	padding: 0 .8em;
+	background: rgba(15, 17, 21, .85);
+	border-bottom: 1px solid var(--ez-border);
+}
+.ezov_nm {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--ez-fg);
+}
+.ezov_b {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.2em;
+	height: 2.2em;
+	flex: none;
+	border: 0;
+	border-radius: 6px;
+	background: none;
+	color: var(--ez-fg-dim);
+	cursor: pointer;
+}
+.ezov_b:hover {
+	background: var(--ez-surface);
+	color: var(--ez-fg);
+}
+.ezov_body {
+	max-width: 100%;
+	max-height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.ezov_body img,
+.ezov_body video {
+	max-width: 100%;
+	max-height: 82vh;
+	border-radius: 6px;
+	display: block;
+}
+.ezov_body iframe {
+	width: min(90vw, 60em);
+	height: 82vh;
+	border: 0;
+	border-radius: 6px;
+	background: #fff;
+}
+.ezov_txt {
+	max-width: min(90vw, 60em);
+	max-height: 82vh;
+	overflow: auto;
+	background: var(--ez-surface);
+	border: 1px solid var(--ez-border);
+	border-radius: 8px;
+	padding: 1em 1.2em;
+	margin: 0;
+	white-space: pre-wrap;
+	word-break: break-word;
+	font-size: .85em;
+	line-height: 1.6;
+	text-align: left;
+}
+.ezov_au,
+.ezov_no {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+	color: var(--ez-fg-dim);
+	background: var(--ez-surface);
+	border: 1px solid var(--ez-border);
+	border-radius: 10px;
+	padding: 2.5em 3em;
+}
+.ezov_au>.ez_i,
+.ezov_no>.ez_i {
+	width: 3em;
+	height: 3em;
+}
+.ezov_nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 2.8em;
+	height: 2.8em;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(23, 26, 33, .9);
+	color: var(--ez-fg);
+	cursor: pointer;
+}
+.ezov_nav::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-color: currentColor;
+	-webkit-mask: var(--ez-chev) no-repeat center / 42%;
+	mask: var(--ez-chev) no-repeat center / 42%;
+}
+.ezov_nav:hover {
+	background: var(--ez-surface-h);
+}
+.ezov_prev {
+	left: .8em;
+	transform: translateY(-50%) rotate(180deg);
+}
+.ezov_next {
+	right: .8em;
+}
+
+@media (max-width: 34em) {
+	.ezov_nav {
+		display: none;
+	}
+	.ez_selbar {
+		font-size: .95em;
+	}
+}
+
+/* extra icons */
+
+html.ez {
+	--ez-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
+}
+
+.ez_i_pen {
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20l1-4L16 5l3 3L8 19zM14 7l3 3'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20l1-4L16 5l3 3L8 19zM14 7l3 3'/%3E%3C/svg%3E");
+}
+.ez_i_trash {
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6'/%3E%3C/svg%3E");
+}
+.ez_i_x {
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E");
+}
+
+/* ---- copyparty's own dialogs, minus the expert controls ---- */
+
+/* the rename dialog carries regex/preset/windows-compat tooling and a
+   read-only tag dump; easy mode keeps just old -> new + apply/cancel */
+html.ez #rui #rn_adv,
+html.ez #rui #rn_case,
+html.ez #rui #rn_win,
+html.ez #rui #rn_slash,
+html.ez #rui #rn_vadv,
+html.ez #rui .rn_dec,
+html.ez #rui>div:last-child {
+	display: none !important;
+}
+html.ez #rui {
+	background: var(--ez-surface);
+	border: 1px solid var(--ez-border);
+	border-radius: var(--ez-radius);
+	padding: 1em 1.1em;
+	color: var(--ez-fg);
+}
+html.ez #rui table {
+	margin-top: .6em;
+}
+html.ez #rui input[type="text"] {
+	background: var(--ez-bg);
+	border: 1px solid var(--ez-border);
+	border-radius: 6px;
+	color: var(--ez-fg);
+	padding: .45em .6em;
+	font-size: 1em;
+}
+html.ez #rui button {
+	border-radius: 6px;
+	padding: .45em .9em;
+}
+html.ez #rui #rn_apply {
+	background: var(--ez-accent);
+	border-color: var(--ez-accent);
+	color: var(--ez-accent-fg);
+	font-weight: 500;
+}
+
+/* the "//" between the hidden decode/reset buttons is a bare text node,
+   so it can only be removed by zeroing the row and restoring children */
+html.ez #rui>div:first-child {
+	font-size: 0;
+}
+html.ez #rui>div:first-child>* {
+	font-size: 1rem;
+	margin-right: .4em;
+}
+html.ez #rui {
+	max-width: min(92vw, 34em);
+	overflow: hidden;
+}
+html.ez #rui table {
+	width: 100%;
+}
+html.ez #rui #rn_f td:first-child {
+	padding-right: .6em;
+	color: var(--ez-fg-dim);
+}
