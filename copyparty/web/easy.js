@@ -1,9 +1,10 @@
 // easy mode: a smaller, friendlier front-end over copyparty's own engine.
 //
 // this is presentation only. selection is stored on the (hidden) #files
-// rows and handed to msel, so rename / delete / zip / multi-download are
-// the exact same code paths the expert ui uses -- easy mode never
-// reimplements them, it just offers them in fewer, larger buttons.
+// rows and handed to msel, so rename / delete / cut / copy / paste /
+// share / zip / multi-download are the exact same code paths the expert
+// ui uses -- easy mode never reimplements them, it just offers them in
+// fewer, larger buttons.
 
 var ezmode = (function () {
 	var r = {},
@@ -11,12 +12,14 @@ var ezmode = (function () {
 		ovl = null,
 		items = [],
 		shown = -1,
+		filt = '',
+		view = 'grid',
 		upwatch = null,
 		upactive = false;
 
 	r.on = false;
 
-	function esc(s) {
+	function esc2(s) {
 		return (s + '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 	}
@@ -61,11 +64,24 @@ var ezmode = (function () {
 
 	// ---- listing -------------------------------------------------------
 
+	// map the table's columns by their header name, since the tag columns
+	// in between are volume-dependent
+	function cols() {
+		var th = QSA('#files thead th'),
+			m = {};
+
+		for (var a = 0; a < th.length; a++)
+			m[th[a].getAttribute('name')] = a;
+
+		return m;
+	}
+
 	// read from the #files table, not treectl.lsc: lsc is only filled by
 	// the ajax path (so it is empty on first load) and the table already
 	// reflects the active sort order
 	function scan() {
 		var rows = QSA('#files tbody tr'),
+			c = cols(),
 			out = [];
 
 		for (var a = 0, aa = rows.length; a < aa; a++) {
@@ -75,23 +91,35 @@ var ezmode = (function () {
 			if (!link)
 				continue;
 
-			var href = link.getAttribute('href') || '';
+			var href = link.getAttribute('href') || '',
+				cell = function (k) {
+					var i = c[k];
+					return i !== undefined && rows[a].cells[i] ?
+						rows[a].cells[i].textContent.trim() : '';
+				};
+
 			out.push({
 				tr: rows[a],
 				href: href,
 				name: link.textContent,
-				sz: (rows[a].cells[2] || {}).textContent,
+				sz: cell('sz'),
+				ext: cell('ext'),
+				ts: cell('ts'),
 				dir: href.split('?')[0].slice(-1) == '/'
 			});
 		}
 		return out;
 	}
 
-	function selected() {
+	function visible() {
+		if (!filt)
+			return items;
+
 		var o = [];
 		for (var a = 0; a < items.length; a++)
-			if (items[a].tr.className.indexOf('sel') + 1)
+			if (items[a].name.toLowerCase().indexOf(filt) + 1)
 				o.push(items[a]);
+
 		return o;
 	}
 
@@ -106,104 +134,162 @@ var ezmode = (function () {
 		clmod(items[i].tr, 'sel', on === undefined ? 't' : on);
 	}
 
+	function nsel() {
+		var n = 0;
+		for (var a = 0; a < items.length; a++)
+			if (items[a].tr.className.indexOf('sel') + 1)
+				n++;
+		return n;
+	}
+
 	// ---- rendering -----------------------------------------------------
 
 	r.crumbs = function () {
 		var parts = get_evpath().split('/'),
 			link = '',
-			h = ['<button class="ez_crumb" data-h="' + esc(SR + '/') + '">' +
-				esc(tl('ez_home', 'Home')) + '</button>'];
+			h = ['<button class="ez_crumb" data-h="' + esc2(SR + '/') + '">' +
+				esc2(tl('ez_home', 'Home')) + '</button>'];
 
 		for (var a = 1; a < parts.length - 1; a++) {
 			link += parts[a] + '/';
 			h.push('<span class="ez_sep"></span>');
-			h.push('<button class="ez_crumb" data-h="' + esc(link) + '">' +
-				esc(uricom_dec(parts[a])) + '</button>');
+			h.push('<button class="ez_crumb" data-h="' + esc2(link) + '">' +
+				esc2(uricom_dec(parts[a])) + '</button>');
 		}
 		return h.join('');
 	};
+
+	function btn(id, ico, label, cls) {
+		return '<button class="ez_btn ' + (cls || '') + '" id="' + id + '">' +
+			(ico ? '<i class="ez_i ez_i_' + ico + '"></i>' : '') + esc2(label) + '</button>';
+	}
 
 	r.render = function () {
 		if (!r.on || !box)
 			return;
 
 		items = scan();
-		var h = [];
+		var vis = visible(),
+			h = [];
 
+		// --- header
 		h.push('<div class="ez_bar">');
 		h.push('<div class="ez_path">' + r.crumbs() + '</div>');
-		h.push('<div class="ez_acts">');
-		if (may('write'))
-			h.push('<button class="ez_btn ez_pri" id="ez_up"><i class="ez_i ez_i_up"></i>' +
-				esc(tl('ez_upload', 'Upload')) + '</button>');
-		if (typeof have_zip === 'undefined' || have_zip)
-			h.push('<button class="ez_btn" id="ez_zipall"><i class="ez_i ez_i_zip"></i>' +
-				esc(tl('ez_zip', 'Download all')) + '</button>');
-		h.push('<button class="ez_btn ez_ghost" id="ez_expert">' +
-			esc(tl('ez_expert', 'Expert mode')) + '</button>');
-		h.push('</div></div>');
-
-		// contextual action bar; visibility is toggled in paint()
-		h.push('<div class="ez_selbar" id="ez_selbar">');
-		h.push('<span class="ez_seln" id="ez_seln"></span>');
-		h.push('<button class="ez_btn" id="ez_dl"><i class="ez_i ez_i_dl"></i>' +
-			esc(tl('ez_download', 'Download')) + '</button>');
-		if (typeof have_zip === 'undefined' || have_zip)
-			h.push('<button class="ez_btn" id="ez_zipsel"><i class="ez_i ez_i_zip"></i>' +
-				esc(tl('ez_zipsel', 'Download as zip')) + '</button>');
-		if (may('move'))
-			h.push('<button class="ez_btn" id="ez_ren"><i class="ez_i ez_i_pen"></i>' +
-				esc(tl('ez_rename', 'Rename')) + '</button>');
-		if (may('delete'))
-			h.push('<button class="ez_btn ez_dang" id="ez_del"><i class="ez_i ez_i_trash"></i>' +
-				esc(tl('ez_delete', 'Delete')) + '</button>');
-		h.push('<button class="ez_btn ez_ghost" id="ez_clr">' +
-			esc(tl('ez_clear', 'Clear')) + '</button>');
+		h.push('<div class="ez_search"><i class="ez_i ez_i_search"></i>' +
+			'<input type="text" id="ez_q" autocomplete="off" spellcheck="false" placeholder="' +
+			esc2(tl('ez_searchph', 'Search this folder')) + '" value="' + esc2(filt) + '" />' +
+			'<button id="ez_qx" class="ez_qx"><i class="ez_i ez_i_x"></i></button></div>');
 		h.push('</div>');
 
-		if (!items.length)
-			h.push('<div class="ez_empty">' + esc(tl('ez_empty', 'This folder is empty')) + '</div>');
+		h.push('<div class="ez_bar ez_bar2">');
+		if (may('write')) {
+			h.push(btn('ez_up', 'up', tl('ez_upload', 'Upload'), 'ez_pri'));
+			h.push(btn('ez_mkdir', 'folderadd', tl('ez_newdir', 'New folder')));
+			h.push(btn('ez_mkfile', 'fileadd', tl('ez_newfile', 'New file')));
+		}
+		if (fileman.clip && fileman.clip.length && may('write'))
+			h.push(btn('ez_paste', 'paste', tl('ez_paste', 'Paste') +
+				' (' + fileman.clip.length + ')'));
+		h.push('<span class="ez_gap"></span>');
+		if (typeof have_zip === 'undefined' || have_zip)
+			h.push(btn('ez_zipall', 'zip', tl('ez_zip', 'Download all')));
+		h.push('<button class="ez_btn ez_icob" id="ez_view" title="' +
+			esc2(tl('ez_view', 'Switch view')) + '"><i class="ez_i ez_i_' +
+			(view == 'grid' ? 'list' : 'grid') + '"></i></button>');
+		h.push('<button class="ez_btn ez_ghost" id="ez_expert">' +
+			esc2(tl('ez_expert', 'Expert mode')) + '</button>');
+		h.push('</div>');
+
+		// --- contextual actions
+		h.push('<div class="ez_selbar" id="ez_selbar">');
+		h.push('<span class="ez_seln" id="ez_seln"></span>');
+		h.push(btn('ez_dl', 'dl', tl('ez_download', 'Download')));
+		if (typeof have_zip === 'undefined' || have_zip)
+			h.push(btn('ez_zipsel', 'zip', tl('ez_zipsel', 'Download as zip')));
+		if (typeof can_shr !== 'undefined' && can_shr)
+			h.push(btn('ez_shr', 'share', tl('ez_share', 'Share')));
+		if (may('move')) {
+			h.push(btn('ez_ren', 'pen', tl('ez_rename', 'Rename')));
+			h.push(btn('ez_cut', 'cut', tl('ez_cut', 'Cut')));
+		}
+		h.push(btn('ez_cpy', 'copy', tl('ez_copy', 'Copy')));
+		if (may('delete'))
+			h.push(btn('ez_del', 'trash', tl('ez_delete', 'Delete'), 'ez_dang'));
+		h.push(btn('ez_clr', '', tl('ez_clear', 'Clear'), 'ez_ghost'));
+		h.push('</div>');
+
+		if (!vis.length)
+			h.push('<div class="ez_empty">' + esc2(filt ?
+				tl('ez_nohit', 'Nothing matches your search') :
+				tl('ez_empty', 'This folder is empty')) + '</div>');
 
 		// same negotiation the expert grid uses; falls back to jpeg
 		var thq = 'th=' + (window.have_jxl ? 'x' : window.have_webp === false ? 'j' : 'w');
 
-		h.push('<div class="ez_grid">');
-		for (var a = 0; a < items.length; a++) {
-			var it = items[a],
-				nm = it.dir ? it.name.replace(/\/$/, '') : it.name,
-				k = it.dir ? 'folder' : kind(nm),
-				// audio gets a spectrogram, so it is worth a thumb too
-				th = !it.dir && (k == 'img' || k == 'video' || k == 'audio');
+		if (view == 'list') {
+			h.push('<table class="ez_list"><thead><tr><th class="ez_c"></th><th>' +
+				esc2(tl('ez_cname', 'Name')) + '</th><th>' +
+				esc2(tl('ez_cdate', 'Date')) + '</th><th>' +
+				esc2(tl('ez_ctype', 'Type')) + '</th><th class="ez_r">' +
+				esc2(tl('ez_csize', 'Size')) + '</th></tr></thead><tbody>');
 
-			h.push('<div class="ez_tile ' + (it.dir ? 'ez_dir' : 'ez_file') + '" data-i="' + a + '">' +
-				'<button class="ez_chk" data-i="' + a + '" title="' +
-				esc(tl('ez_select', 'Select')) + '"></button>' +
-				'<span class="ez_thumb">' +
-				'<i class="ez_i ez_i_' + k + '"></i>' +
-				(th ? '<img class="ez_th" loading="lazy" alt="" src="' +
-					esc(addq(it.href, thq)) + '" />' : '') +
-				'</span>' +
-				'<span class="ez_nm">' + esc(nm) + '</span>' +
-				'<span class="ez_meta">' + esc(it.dir ? tl('ez_folder', 'Folder') : fmtsz(it.sz)) + '</span>' +
-				'</div>');
+			for (var a = 0; a < vis.length; a++) {
+				var it = vis[a],
+					i = items.indexOf(it),
+					nm = it.dir ? it.name.replace(/\/$/, '') : it.name,
+					k = it.dir ? 'folder' : kind(nm);
+
+				h.push('<tr class="ez_row" data-i="' + i + '">' +
+					'<td class="ez_c"><button class="ez_chk" data-i="' + i + '"></button></td>' +
+					'<td class="ez_nmc"><i class="ez_i ez_i_' + k + '"></i><span>' +
+					esc2(nm) + '</span></td>' +
+					'<td class="ez_dim">' + esc2(it.ts) + '</td>' +
+					'<td class="ez_dim">' + esc2(it.dir ? tl('ez_folder', 'Folder') : it.ext) + '</td>' +
+					'<td class="ez_r ez_dim">' + esc2(it.dir ? '' : fmtsz(it.sz)) + '</td>' +
+					'</tr>');
+			}
+			h.push('</tbody></table>');
 		}
-		h.push('</div>');
+		else {
+			h.push('<div class="ez_grid">');
+			for (var a = 0; a < vis.length; a++) {
+				var it = vis[a],
+					i = items.indexOf(it),
+					nm = it.dir ? it.name.replace(/\/$/, '') : it.name,
+					k = it.dir ? 'folder' : kind(nm),
+					// audio gets a spectrogram, so it is worth a thumb too
+					th = !it.dir && (k == 'img' || k == 'video' || k == 'audio');
+
+				h.push('<div class="ez_tile ' + (it.dir ? 'ez_dir' : 'ez_file') + '" data-i="' + i + '">' +
+					'<button class="ez_chk" data-i="' + i + '" title="' +
+					esc2(tl('ez_select', 'Select')) + '"></button>' +
+					'<span class="ez_thumb">' +
+					'<i class="ez_i ez_i_' + k + '"></i>' +
+					(th ? '<img class="ez_th" loading="lazy" alt="" src="' +
+						esc2(addq(it.href, thq)) + '" />' : '') +
+					'</span>' +
+					'<span class="ez_nm">' + esc2(nm) + '</span>' +
+					'<span class="ez_meta">' + esc2(it.dir ? tl('ez_folder', 'Folder') : fmtsz(it.sz)) + '</span>' +
+					'</div>');
+			}
+			h.push('</div>');
+		}
 
 		box.innerHTML = h.join('');
 		r.wire();
 		paint();
 	};
 
-	// reflect selection state without rebuilding the grid
+	// reflect selection without rebuilding the grid
 	function paint() {
-		var tiles = QSA('#ez .ez_tile'),
+		var els = QSA('#ez .ez_tile, #ez .ez_row'),
 			n = 0;
 
-		for (var a = 0; a < tiles.length; a++) {
-			var i = parseInt(tiles[a].getAttribute('data-i'), 10),
+		for (var a = 0; a < els.length; a++) {
+			var i = parseInt(els[a].getAttribute('data-i'), 10),
 				on = items[i] && items[i].tr.className.indexOf('sel') + 1;
 
-			clmod(tiles[a], 'on', on);
+			clmod(els[a], 'on', on);
 			if (on)
 				n++;
 		}
@@ -217,9 +303,13 @@ var ezmode = (function () {
 		if (lbl)
 			lbl.textContent = tl('ez_nsel', '{0} selected').format(n);
 
-		var ren = ebi('ez_ren');
-		if (ren)
-			ren.disabled = n != 1;
+		var b = ebi('ez_ren');
+		if (b)
+			b.disabled = n != 1;
+
+		b = ebi('ez_shr');
+		if (b)
+			b.disabled = !n;
 	}
 
 	r.wire = function () {
@@ -229,16 +319,8 @@ var ezmode = (function () {
 		for (a = 0; a < els.length; a++)
 			els[a].onclick = function (e) {
 				ev(e);
+				filt = '';
 				treectl.reqls(this.getAttribute('data-h'), true);
-			};
-
-		// checkbox toggles selection; the tile body opens
-		els = QSA('#ez .ez_chk');
-		for (a = 0; a < els.length; a++)
-			els[a].onclick = function (e) {
-				ev(e);
-				pick(parseInt(this.getAttribute('data-i'), 10));
-				sync();
 			};
 
 		// a thumb that fails to generate just reveals the icon behind it
@@ -248,12 +330,18 @@ var ezmode = (function () {
 			els[a].onload = function () { clmod(this.parentNode, 'has', 1); };
 		}
 
-		els = QSA('#ez .ez_tile');
+		els = QSA('#ez .ez_chk');
+		for (a = 0; a < els.length; a++)
+			els[a].onclick = function (e) {
+				ev(e);
+				pick(parseInt(this.getAttribute('data-i'), 10));
+				sync();
+			};
+
+		els = QSA('#ez .ez_tile, #ez .ez_row');
 		for (a = 0; a < els.length; a++)
 			els[a].onclick = function (e) {
 				var i = parseInt(this.getAttribute('data-i'), 10);
-
-				// ctrl/shift/an active selection means "keep picking"
 				if (ctrl(e) || e.shiftKey || box.className.indexOf('picking') + 1) {
 					ev(e);
 					pick(i);
@@ -263,35 +351,119 @@ var ezmode = (function () {
 				r.open(i);
 			};
 
-		var b = ebi('ez_up');
+		var q = ebi('ez_q');
+		if (q) {
+			q.oninput = function () {
+				filt = this.value.toLowerCase();
+				var at = this.selectionStart;
+				r.render();
+				var n = ebi('ez_q');
+				n.focus();
+				try { n.setSelectionRange(at, at); } catch (ex) { }
+			};
+			q.onkeydown = function (e) {
+				if ((e.key == 'Escape' || e.keyCode == 27) && filt) {
+					ev(e);
+					filt = '';
+					r.render();
+				}
+			};
+		}
+
+		var b = ebi('ez_qx');
+		if (b) b.onclick = function (e) { ev(e); filt = ''; r.render(); };
+
+		b = ebi('ez_up');
 		if (b) b.onclick = function (e) { ev(e); r.upload(); };
+
+		b = ebi('ez_mkdir');
+		if (b) b.onclick = function (e) { ev(e); r.mk(true); };
+
+		b = ebi('ez_mkfile');
+		if (b) b.onclick = function (e) { ev(e); r.mk(false); };
 
 		b = ebi('ez_zipall');
 		if (b) b.onclick = function (e) { ev(e); r.zipall(); };
 
+		b = ebi('ez_view');
+		if (b) b.onclick = function (e) {
+			ev(e);
+			view = view == 'grid' ? 'list' : 'grid';
+			swrite('ezview', view);
+			r.render();
+		};
+
 		b = ebi('ez_expert');
 		if (b) b.onclick = function (e) { ev(e); r.set(false); };
 
-		// these delegate straight to the expert implementations
+		// everything below delegates to the expert implementation
 		b = ebi('ez_dl');
 		if (b) b.onclick = function (e) { ev(e); ebi('seldl').click(); };
 
 		b = ebi('ez_zipsel');
 		if (b) b.onclick = function (e) { ev(e); ebi('selzip').click(); };
 
+		b = ebi('ez_shr');
+		if (b) b.onclick = function (e) { ev(e); fileman.share(e); };
+
 		b = ebi('ez_ren');
 		if (b) b.onclick = function (e) { ev(e); fileman.rename(e); };
+
+		// the clipboard now holds them, so drop the selection: otherwise
+		// the next click keeps picking instead of navigating
+		b = ebi('ez_cut');
+		if (b) b.onclick = function (e) { ev(e); fileman.cut(e); r.deselect(); };
+
+		b = ebi('ez_cpy');
+		if (b) b.onclick = function (e) { ev(e); fileman.cpy(e); r.deselect(); };
+
+		b = ebi('ez_paste');
+		if (b) b.onclick = function (e) { ev(e); fileman.paste(); };
 
 		b = ebi('ez_del');
 		if (b) b.onclick = function (e) { ev(e); fileman.delete(e); };
 
 		b = ebi('ez_clr');
-		if (b) b.onclick = function (e) {
-			ev(e);
-			for (var i = 0; i < items.length; i++)
-				pick(i, 0);
-			sync();
-		};
+		if (b) b.onclick = function (e) { ev(e); r.deselect(); };
+	};
+
+	r.deselect = function () {
+		for (var i = 0; i < items.length; i++)
+			pick(i, 0);
+
+		sync();
+		r.render();
+	};
+
+	// ---- create --------------------------------------------------------
+
+	// same request the expert right-click menu sends
+	r.mk = function (is_dir) {
+		modal.prompt(is_dir ? tl('ez_newdir', 'New folder') : tl('ez_newfile', 'New file'),
+			'', function (name) {
+				name = ('' + (name || '')).trim();
+				if (!name)
+					return;
+
+				var data = new FormData();
+				data.set('act', is_dir ? 'mkdir' : 'new_md');
+				data.set('name', name);
+
+				var req = new XHR();
+				req.open('POST', get_evpath());
+				req.onload = req.onerror = function () {
+					if (this.status == 405 || this.status == 500)
+						return toast.err(4, tl('ez_eexist', 'Something with that name already exists'));
+
+					if (this.status < 200 || this.status > 399)
+						return toast.err(6, esc(this.responseText));
+
+					toast.ok(3, is_dir ? tl('ez_okdir', 'Folder created') :
+						tl('ez_okfile', 'File created'));
+					treectl.reqls(get_evpath(), false);
+				};
+				req.send(data);
+			});
 	};
 
 	// ---- in-page viewer ------------------------------------------------
@@ -324,8 +496,10 @@ var ezmode = (function () {
 		if (!it)
 			return;
 
-		if (it.dir)
+		if (it.dir) {
+			filt = '';
 			return treectl.reqls(it.href, true);
+		}
 
 		if (!ovl)
 			mkovl();
@@ -337,6 +511,7 @@ var ezmode = (function () {
 		var nm = it.name,
 			body = ebi('ezov_body'),
 			k = kind(nm),
+			e = ext(nm),
 			url = it.href;
 
 		ebi('ezov_nm').textContent = nm;
@@ -344,36 +519,25 @@ var ezmode = (function () {
 		body.innerHTML = '';
 
 		if (k == 'img')
-			body.innerHTML = '<img src="' + esc(url) + '" alt="' + esc(nm) + '" />';
+			body.innerHTML = '<img src="' + esc2(url) + '" alt="' + esc2(nm) + '" />';
 		else if (k == 'video')
-			body.innerHTML = '<video src="' + esc(url) + '" controls autoplay playsinline></video>';
+			body.innerHTML = '<video src="' + esc2(url) + '" controls autoplay playsinline></video>';
 		else if (k == 'audio')
 			body.innerHTML = '<div class="ezov_au"><i class="ez_i ez_i_audio"></i>' +
-				'<audio src="' + esc(url) + '" controls autoplay></audio></div>';
+				'<audio src="' + esc2(url) + '" controls autoplay></audio></div>';
 		else if (k == 'pdf')
-			body.innerHTML = '<iframe src="' + esc(url) + '"></iframe>';
+			body.innerHTML = '<iframe src="' + esc2(url) + '"></iframe>';
 		else if (k == 'text') {
-			body.innerHTML = '<pre class="ezov_txt">...</pre>';
-			// ?raw skips the markdown/code viewer and gives us the bytes
-			var xhr = new XHR();
-			xhr.open('GET', addq(url, 'raw'), true);
-			xhr.onload = function () {
-				var pre = QS('#ezov_body .ezov_txt');
-				if (pre)
-					pre.textContent = this.responseText;
-			};
-			xhr.onerror = function () {
-				var pre = QS('#ezov_body .ezov_txt');
-				if (pre)
-					pre.textContent = tl('ez_noprev', 'No preview available');
-			};
-			xhr.send();
+			// ?v is copyparty's own document viewer: markdown gets rendered
+			// and code gets syntax-highlighted, which beats dumping raw text.
+			// some hrefs already carry it, so don't append a second one
+			var vurl = /[?&]v(&|=|$)/.test(url) ? url : addq(url, 'v');
+			body.innerHTML = '<iframe class="ezov_doc" src="' + esc2(vurl) + '"></iframe>';
 		}
 		else
 			body.innerHTML = '<div class="ezov_no"><i class="ez_i ez_i_file"></i><span>' +
-				esc(tl('ez_noprev', 'No preview available')) + '</span></div>';
+				esc2(tl('ez_noprev', 'No preview available')) + '</span></div>';
 
-		// only offer prev/next across previewable files
 		var nfile = 0;
 		for (var a = 0; a < items.length; a++)
 			if (!items[a].dir)
@@ -396,7 +560,6 @@ var ezmode = (function () {
 		if (!ovl)
 			return;
 
-		// stop any media that is still playing
 		var m = QS('#ezov_body video, #ezov_body audio');
 		if (m) {
 			try { m.pause(); } catch (ex) { }
@@ -466,10 +629,14 @@ var ezmode = (function () {
 				box = mknod('div', 'ez');
 				document.body.appendChild(box);
 			}
+			view = sread('ezview') == 'list' ? 'list' : 'grid';
 			r.render();
+			// up2k already owns body ondrop; watch so we can report the end
+			document.body.addEventListener('drop', r.watch, true);
 		}
 		else {
 			r.close();
+			document.body.removeEventListener('drop', r.watch, true);
 			if (box)
 				box.innerHTML = '';
 		}
@@ -481,18 +648,16 @@ var ezmode = (function () {
 	};
 
 	r.key = function (e) {
-		if (!r.on)
+		if (!r.on || shown < 0)
 			return;
 
 		var k = e.key || '';
-		if (shown >= 0) {
-			if (k == 'Escape' || k == 'Esc')
-				return r.close(e);
-			if (k == 'ArrowRight')
-				return r.step(1);
-			if (k == 'ArrowLeft')
-				return r.step(-1);
-		}
+		if (k == 'Escape' || k == 'Esc')
+			return r.close(e);
+		if (k == 'ArrowRight')
+			return r.step(1);
+		if (k == 'ArrowLeft')
+			return r.step(-1);
 	};
 
 	return r;
