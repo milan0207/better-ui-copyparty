@@ -164,15 +164,25 @@ var ezmode = (function () {
 		if (!items.length)
 			h.push('<div class="ez_empty">' + esc(tl('ez_empty', 'This folder is empty')) + '</div>');
 
+		// same negotiation the expert grid uses; falls back to jpeg
+		var thq = 'th=' + (window.have_jxl ? 'x' : window.have_webp === false ? 'j' : 'w');
+
 		h.push('<div class="ez_grid">');
 		for (var a = 0; a < items.length; a++) {
 			var it = items[a],
-				nm = it.dir ? it.name.replace(/\/$/, '') : it.name;
+				nm = it.dir ? it.name.replace(/\/$/, '') : it.name,
+				k = it.dir ? 'folder' : kind(nm),
+				// audio gets a spectrogram, so it is worth a thumb too
+				th = !it.dir && (k == 'img' || k == 'video' || k == 'audio');
 
 			h.push('<div class="ez_tile ' + (it.dir ? 'ez_dir' : 'ez_file') + '" data-i="' + a + '">' +
 				'<button class="ez_chk" data-i="' + a + '" title="' +
 				esc(tl('ez_select', 'Select')) + '"></button>' +
-				'<i class="ez_i ez_i_' + (it.dir ? 'folder' : kind(nm)) + '"></i>' +
+				'<span class="ez_thumb">' +
+				'<i class="ez_i ez_i_' + k + '"></i>' +
+				(th ? '<img class="ez_th" loading="lazy" alt="" src="' +
+					esc(addq(it.href, thq)) + '" />' : '') +
+				'</span>' +
 				'<span class="ez_nm">' + esc(nm) + '</span>' +
 				'<span class="ez_meta">' + esc(it.dir ? tl('ez_folder', 'Folder') : fmtsz(it.sz)) + '</span>' +
 				'</div>');
@@ -230,6 +240,13 @@ var ezmode = (function () {
 				pick(parseInt(this.getAttribute('data-i'), 10));
 				sync();
 			};
+
+		// a thumb that fails to generate just reveals the icon behind it
+		els = QSA('#ez .ez_th');
+		for (a = 0; a < els.length; a++) {
+			els[a].onerror = function () { this.style.display = 'none'; };
+			els[a].onload = function () { clmod(this.parentNode, 'has', 1); };
+		}
 
 		els = QSA('#ez .ez_tile');
 		for (a = 0; a < els.length; a++)
