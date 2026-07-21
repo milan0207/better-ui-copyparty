@@ -164,10 +164,10 @@ if (1)
 
 		"ul_par": "parallel uploads:",
 		"ut_rand": "randomize filenames",
-		"ut_u2ts": "copy the last-modified timestamp$Nfrom your filesystem to the server\">📅",
+		"ut_u2ts": "copy the last-modified timestamp$Nfrom your filesystem to the server\">",
 		"ut_ow": "overwrite existing files on the server?$N🛡️: never (will generate a new filename instead)$N🕒: overwrite if server-file is older than yours$N♻️: always overwrite if the files are different$N⏭️: unconditionally skip all existing files",
 		"ut_mt": "continue hashing other files while uploading$N$Nmaybe disable if your CPU or HDD is a bottleneck",
-		"ut_ask": 'ask for confirmation before upload starts">💭',
+		"ut_ask": 'ask for confirmation before upload starts">',
 		"ut_pot": "improve upload speed on slow devices$Nby making the UI less complex",
 		"ut_srch": "don't actually upload, instead check if the files already $N exist on the server (will scan all folders you can read)",
 		"ut_par": "pause uploads by setting it to 0$N$Nincrease if your connection is slow / high latency$N$Nkeep it 1 on LAN or if the server HDD is a bottleneck",
@@ -234,22 +234,22 @@ if (1)
 		"cl_gauto": "autogrid",
 
 		"ct_grid": '田 the grid',
-		"ct_ttips": '◔ ◡ ◔">ℹ️ tooltips',
-		"ct_thumb": 'in grid-view, toggle icons or thumbnails$NHotkey: T">🖼️ thumbs',
+		"ct_ttips": '◔ ◡ ◔">tooltips',
+		"ct_thumb": 'in grid-view, toggle icons or thumbnails$NHotkey: T">thumbs',
 		"ct_csel": 'use CTRL and SHIFT for file selection in grid-view">sel',
 		"ct_dsel": 'use drag-selection in grid-view">dsel',
 		"ct_dl": 'force download (don\'t display inline) when a file is clicked">dl',
-		"ct_ihop": 'when the image viewer is closed, scroll down to the last viewed file">g⮯',
+		"ct_ihop": 'when the image viewer is closed, scroll down to the last viewed file">g',
 		"ct_dots": 'show hidden files (if server permits)">dotfiles',
 		"ct_qdel": 'when deleting files, only ask for confirmation once">qdel',
-		"ct_dir1st": 'sort folders before files">📁 first',
+		"ct_dir1st": 'sort folders before files">first',
 		"ct_nsort": 'natural sort (for filenames with leading digits)">nsort',
 		"ct_utc": 'show all datetimes in UTC">UTC',
-		"ct_readme": 'show README.md in folder listings">📜 readme',
+		"ct_readme": 'show README.md in folder listings">readme',
 		"ct_idxh": 'show index.html instead of folder listing">htm',
 		"ct_sbars": 'show scrollbars">⟊',
 
-		"cut_umod": "if a file already exists on the server, update the server's last-modified timestamp to match your local file (requires write+delete permissions)\">re📅",
+		"cut_umod": "if a file already exists on the server, update the server's last-modified timestamp to match your local file (requires write+delete permissions)\">re",
 
 		"cut_turbo": "the yolo button, you probably DO NOT want to enable this:$N$Nuse this if you were uploading a huge amount of files and had to restart for some reason, and want to continue the upload ASAP$N$Nthis replaces the hash-check with a simple <em>&quot;does this have the same filesize on the server?&quot;</em> so if the file contents are different it will NOT be uploaded$N$Nyou should turn this off when the upload is done, and then &quot;upload&quot; the same files again to let the client verify them\">turbo",
 
@@ -298,25 +298,25 @@ if (1)
 		"ml_drc": "dynamic range compressor",
 		"ml_ss": "skip silence",
 
-		"mt_loop": "loop/repeat one song\">🔁",
-		"mt_one": "stop after one song\">1️⃣",
-		"mt_shuf": "shuffle the songs in each folder\">🔀",
+		"mt_loop": "loop/repeat one song\">",
+		"mt_one": "stop after one song\">1",
+		"mt_shuf": "shuffle the songs in each folder\">",
 		"mt_aplay": "autoplay if there is a song-ID in the link you clicked to access the server$N$Ndisabling this will also stop the page URL from being updated with song-IDs when playing music, to prevent autoplay if these settings are lost but the URL remains\">a▶",
 		"mt_preload": "start loading the next song near the end for gapless playback\">preload",
 		"mt_prescan": "go to the next folder before the last song$Nends, keeping the webbrowser happy$Nso it doesn't stop the playback\">nav",
 		"mt_fullpre": "try to preload the entire song;$N✅ enable on <b>unreliable</b> connections,$N❌ <b>disable</b> on slow connections probably\">full",
-		"mt_fau": "on phones, prevent music from stopping if the next song doesn't preload fast enough (can make tags display glitchy)\">☕️",
+		"mt_fau": "on phones, prevent music from stopping if the next song doesn't preload fast enough (can make tags display glitchy)\">",
 		"mt_waves": "waveform seekbar:$Nshow audio amplitude in the scrubber\">~s",
 		"mt_npclip": "show buttons for clipboarding the currently playing song\">/np",
-		"mt_m3u_c": "show buttons for clipboarding the$Nselected songs as m3u8 playlist entries\">📻",
+		"mt_m3u_c": "show buttons for clipboarding the$Nselected songs as m3u8 playlist entries\">",
 		"mt_octl": "os integration (media hotkeys / osd)\">os-ctl",
 		"mt_oseek": "allow seeking through os integration$N$Nnote: on some devices (iPhones),$Nthis replaces the next-song button\">seek",
 		"mt_oscv": "show album cover in osd\">art",
-		"mt_follow": "keep the playing track scrolled into view\">🎯",
+		"mt_follow": "keep the playing track scrolled into view\">",
 		"mt_compact": "compact controls\">⟎",
 		"mt_uncache": "clear cache &nbsp;(try this if your browser cached$Na broken copy of a song so it refuses to play)\">uncache",
-		"mt_mloop": "loop the open folder\">🔁 loop",
-		"mt_mnext": "load the next folder and continue\">📂 next",
+		"mt_mloop": "loop the open folder\">loop",
+		"mt_mnext": "load the next folder and continue\">next",
 		"mt_mstop": "stop playback\">⏸ stop",
 		"mt_cflac": "convert flac / wav to {0}\">flac",
 		"mt_caac": "convert aac / m4a to {0}\">aac",
@@ -410,8 +410,8 @@ if (1)
 		"fs_ok": "press <code>Enter/OK</code> to Clipboard\npress <code>ESC/Cancel</code> to Close",
 
 		"frt_dec": "may fix some cases of broken filenames\">url-decode",
-		"frt_rst": "reset modified filenames back to the original ones\">↺ reset",
-		"frt_abrt": "abort and close this window\">❌ cancel",
+		"frt_rst": "reset modified filenames back to the original ones\">reset",
+		"frt_abrt": "abort and close this window\">cancel",
 		"frb_apply": "APPLY RENAME",
 		"fr_adv": "batch / metadata / pattern renaming\">advanced",
 		"fr_case": "case-sensitive regex\">case",
@@ -473,24 +473,24 @@ if (1)
 		"tv_xe1": "could not load textfile:\n\nerror ",
 		"tv_xe2": "404, file not found",
 		"tv_lst": "list of textfiles in",
-		"tvt_close": "return to folder view$NHotkey: M (or Esc)\">❌ close",
-		"tvt_dl": "download this file$NHotkey: Y\">💾 download",
-		"tvt_prev": "show previous document$NHotkey: i\">⬆ prev",
-		"tvt_next": "show next document$NHotkey: K\">⬇ next",
+		"tvt_close": "return to folder view$NHotkey: M (or Esc)\">close",
+		"tvt_dl": "download this file$NHotkey: Y\">download",
+		"tvt_prev": "show previous document$NHotkey: i\">prev",
+		"tvt_next": "show next document$NHotkey: K\">next",
 		"tvt_sel": "select file &nbsp; ( for cut / copy / delete / ... )$NHotkey: S\">sel",
 		"tvt_j": "beautify json$NHotkey: shift-J\">j",
-		"tvt_edit": "open file in text editor$NHotkey: E\">✏️ edit",
-		"tvt_tail": "monitor file for changes; show new lines in real time\">📡 follow",
-		"tvt_wrap": "word-wrap\">↵",
-		"tvt_atail": "lock scroll to bottom of page\">⚓",
-		"tvt_ctail": "decode terminal colors (ansi escape codes)\">🌈",
+		"tvt_edit": "open file in text editor$NHotkey: E\">edit",
+		"tvt_tail": "monitor file for changes; show new lines in real time\">follow",
+		"tvt_wrap": "word-wrap\">",
+		"tvt_atail": "lock scroll to bottom of page\">",
+		"tvt_ctail": "decode terminal colors (ansi escape codes)\">",
 		"tvt_ntail": "scrollback limit (how many bytes of text to keep loaded)",
 
 		"m3u_add1": "song added to m3u playlist",
 		"m3u_addn": "{0} songs added to m3u playlist",
 		"m3u_clip": "m3u playlist now copied to clipboard\n\nyou should create a new textfile named something.m3u and paste the playlist in that document; this will make it playable",
 
-		"gt_vau": "don't show videos, just play the audio\">🎧",
+		"gt_vau": "don't show videos, just play the audio\">",
 		"gt_msel": "enable file selection; ctrl-click a file to override$N$N&lt;em&gt;when active: doubleclick a file / folder to open it&lt;/em&gt;$N$NHotkey: S\">multiselect",
 		"gt_crop": "center-crop thumbnails\">crop",
 		"gt_3x": "hi-res thumbnails\">3x",
@@ -844,7 +844,7 @@ ebi('widget').innerHTML = (
 	' href="#" id="m3uc" tt="' + L.wt_m3uc + '"><span>copy</span></a>' +
 	'</span><a' +
 	'	href="#" id="wtgrid" tt="' + L.wt_grid + '"></a><a' +
-	'	href="#" id="wtico">♫</a>' +
+	'	href="#" id="wtico"></a>' +
 	'</div>' +
 	'<div id="widgeti">' +
 	'	<div id="pctl"><a href="#" id="bprev" tt="' + L.wt_prev + '"></a><a href="#" id="bplay" class="play" tt="' + L.wt_play + '"></a><a href="#" id="bnext" tt="' + L.wt_next + '"></a></div>' +
@@ -1045,15 +1045,15 @@ ebi('op_cfg').innerHTML = (
 	'		<a id="u2turbo" class="tgl btn ttb" href="#" tt="' + L.cut_turbo + '</a>\n' +
 	'		<a id="u2tdate" class="tgl btn ttb" href="#" tt="' + L.cut_datechk + '</a>\n' +
 	'		<input type="text" id="u2szg" value="" ' + NOAC + ' style="width:3em" tt="' + L.cut_u2sz + '" />' +
-	'		<a id="flag_en" class="tgl btn" href="#" tt="' + L.cut_flag + '">💤</a>\n' +
+	'		<a id="flag_en" class="tgl btn" href="#" tt="' + L.cut_flag + '"></a>\n' +
 	'		<a id="u2sort" class="tgl btn" href="#" tt="' + L.cut_az + '">az</a>\n' +
-	'		<a id="upnag" class="tgl btn" href="#" tt="' + L.cut_nag + '">🔔</a>\n' +
-	'		<a id="upsfx" class="tgl btn" href="#" tt="' + L.cut_sfx + '">🔊</a>\n' +
+	'		<a id="upnag" class="tgl btn" href="#" tt="' + L.cut_nag + '"></a>\n' +
+	'		<a id="upsfx" class="tgl btn" href="#" tt="' + L.cut_sfx + '"></a>\n' +
 	'		</td>\n' +
 	'	</div>\n' +
 	'</div>\n' +
 	'<div>\n' +
-	'	<h3>' + L.cl_favico + ' <span id="ico1">🎉</span></h3>\n' +
+	'	<h3>' + L.cl_favico + ' <span id="ico1">◆</span></h3>\n' +
 	'	<div>\n' +
 	'		<input type="text" id="icot" value="" ' + NOAC + ' style="width:1.3em" tt="' + L.cft_text + '" />' +
 	'		<input type="text" id="icof" value="" ' + NOAC + ' style="width:2em" tt="' + L.cft_fg + '" />' +
