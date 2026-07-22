@@ -188,6 +188,17 @@ var ezmode = (function () {
 			'<input type="text" id="ez_q" autocomplete="off" spellcheck="false" placeholder="' +
 			esc2(tl('ez_searchph', 'Search this folder')) + '" value="' + esc2(filt) + '" />' +
 			'<button id="ez_qx" class="ez_qx"><i class="ez_i ez_i_x"></i></button></div>');
+
+		// login sits right after the search, styled like the primary
+		// upload button so it is easy to spot; logout goes via ?h
+		var who = (typeof acct !== 'undefined') ? acct : '*';
+		if (who == '*')
+			h.push('<a class="ez_btn ez_pri ez_login" href="?h">' +
+				'<i class="ez_i ez_i_login"></i>' + esc2(tl('ez_login', 'Login')) + '</a>');
+		else
+			h.push('<a class="ez_btn ez_ghost ez_login" href="?h" title="' +
+				esc2(tl('ez_account', 'Account')) + '"><i class="ez_i ez_i_user"></i>' +
+				esc2(who) + '</a>');
 		h.push('</div>');
 
 		h.push('<div class="ez_bar ez_bar2">');

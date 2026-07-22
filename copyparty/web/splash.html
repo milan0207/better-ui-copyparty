@@ -216,6 +216,10 @@ var SR="{{ r }}",
 var STG = window.localStorage;
 document.documentElement.className = (STG && STG.cpp_thm) || "{{ this.args.theme }}";
 
+// easy mode: show a stripped-down login (password / login / https only)
+if (STG && STG.ezmode == 'y')
+	document.documentElement.className += ' ez';
+
 document.getElementById('k').onclick = function () {
 	localStorage.clear();
 	return true;

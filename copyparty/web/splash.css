@@ -257,3 +257,115 @@ html.bz {
 html.bz .vols img {
 	filter: sepia(0.8) hue-rotate(180deg);
 }
+
+
+/* easy-mode login: a single centred card with just the essentials {{{ */
+
+html.ez {
+	color-scheme: dark;
+}
+html.ez body {
+	background: #0f1115;
+	color: #e6e8ec;
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+html.ez #wrap {
+	max-width: 21em;
+	margin: 12vh auto 0;
+	padding: 2em 1.75em 1.75em;
+	background: #171a21;
+	border: 1px solid #262b36;
+	border-radius: 14px;
+	text-align: left;
+}
+
+/* keep only the login heading and the login form */
+html.ez #wrap > * {
+	display: none !important;
+}
+html.ez #wrap > h1#l,
+html.ez #wrap > h1#z,
+html.ez #wrap > div:has(#lf) {
+	display: block !important;
+}
+html.ez #wrap h1 {
+	font-size: 1.3em;
+	font-weight: 500;
+	margin: 0 0 1em;
+	padding: 0;
+	border: 0;
+	color: #e6e8ec;
+	text-align: center;
+}
+
+html.ez #lf {
+	display: flex;
+	flex-direction: column;
+	gap: .8em;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+}
+html.ez #lf #x {
+	display: none;
+}
+html.ez #lf input#lu,
+html.ez #lf input#lp {
+	width: 100%;
+	box-sizing: border-box;
+	background: #0f1115;
+	border: 1px solid #262b36;
+	border-radius: 8px;
+	color: #e6e8ec;
+	padding: .7em .8em;
+	font-size: 1em;
+	margin: 0;
+}
+html.ez #lf input#lu:focus,
+html.ez #lf input#lp:focus {
+	outline: 2px solid #f0b429;
+	outline-offset: 1px;
+	border-color: #f0b429;
+}
+html.ez #lf input#ls {
+	width: 100%;
+	box-sizing: border-box;
+	background: #f0b429;
+	border: 0;
+	border-radius: 8px;
+	color: #241a03;
+	padding: .75em;
+	font-size: 1em;
+	font-weight: 500;
+	cursor: pointer;
+	margin: 0;
+}
+html.ez #lf input#ls:hover {
+	filter: brightness(1.08);
+}
+html.ez #lf a#w {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
+	background: none !important;
+	border: 1px solid #262b36 !important;
+	border-radius: 8px;
+	color: #9aa1ae !important;
+	text-decoration: none;
+	font-size: .9em;
+	padding: .6em;
+	margin-top: .2em;
+}
+html.ez #lf a#w:hover {
+	color: #f0b429 !important;
+	border-color: #f0b429 !important;
+}
+html.ez #lf #lm {
+	color: #ef4444;
+	text-align: center;
+	font-size: .9em;
+}
+
+/* }}} */
