@@ -760,16 +760,18 @@ html.ez #rui #rn_f td:first-child {
 }
 .ez_list .ez_c {
 	width: 2.8em;
-	text-align: center;
 	padding-left: 0;
 	padding-right: 0;
+	position: relative;
 }
 .ez_list .ez_c .ez_chk {
-	/* relative so the ::after checkmark is contained by the 18px box,
-	   not the whole cell; inline-block + centered cell aligns it */
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
+	/* absolute-centre in the cell: reliable on both axes regardless of
+	   row height, and the ::after checkmark (also absolute, inset:0) is
+	   then bounded by this positioned box rather than the whole cell */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	opacity: 1;
 	border-color: var(--ez-border);
 }
