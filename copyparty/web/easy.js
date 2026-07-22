@@ -548,12 +548,28 @@ var ezmode = (function () {
 				'<audio src="' + esc2(url) + '" controls autoplay></audio></div>';
 		else if (k == 'pdf')
 			body.innerHTML = '<iframe src="' + esc2(url) + '"></iframe>';
-		else if (k == 'text') {
-			// ?v is copyparty's own document viewer: markdown gets rendered
-			// and code gets syntax-highlighted, which beats dumping raw text.
-			// some hrefs already carry it, so don't append a second one
+		else if (k == 'text' && /^(md|markdown)$/.test(e)) {
+			// copyparty's ?v viewer renders markdown nicely; but for plain
+			// text it shows a blank page, so only route markdown here
 			var vurl = /[?&]v(&|=|$)/.test(url) ? url : addq(url, 'v');
 			body.innerHTML = '<iframe class="ezov_doc" src="' + esc2(vurl) + '"></iframe>';
+		}
+		else if (k == 'text') {
+			// plain text / code: fetch the raw bytes and show them readably
+			body.innerHTML = '<pre class="ezov_txt">…</pre>';
+			var pre = QS('#ezov_body .ezov_txt'),
+				xhr = new XHR();
+
+			xhr.open('GET', addq(url, 'raw'), true);
+			xhr.onload = function () {
+				if (pre)
+					pre.textContent = this.responseText;
+			};
+			xhr.onerror = function () {
+				if (pre)
+					pre.textContent = tl('ez_noprev', 'No preview available');
+			};
+			xhr.send();
 		}
 		else
 			body.innerHTML = '<div class="ezov_no"><i class="ez_i ez_i_file"></i><span>' +

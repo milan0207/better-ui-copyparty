@@ -477,6 +477,7 @@ html.ezov body {
 	background: #fff;
 }
 .ezov_txt {
+	min-width: min(90vw, 40em);
 	max-width: min(90vw, 60em);
 	max-height: 82vh;
 	overflow: auto;
@@ -487,6 +488,8 @@ html.ezov body {
 	margin: 0;
 	white-space: pre-wrap;
 	word-break: break-word;
+	color: var(--ez-fg);
+	font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
 	font-size: .85em;
 	line-height: 1.6;
 	text-align: left;
