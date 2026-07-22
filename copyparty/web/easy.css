@@ -759,16 +759,25 @@ html.ez #rui #rn_f td:first-child {
 	background: color-mix(in oklab, var(--ez-accent) 14%, transparent);
 }
 .ez_list .ez_c {
-	width: 2.4em;
-	position: relative;
+	width: 2.8em;
+	text-align: center;
+	padding-left: 0;
+	padding-right: 0;
 }
 .ez_list .ez_c .ez_chk {
-	position: static;
+	/* relative so the ::after checkmark is contained by the 18px box,
+	   not the whole cell; inline-block + centered cell aligns it */
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
 	opacity: 1;
 	border-color: var(--ez-border);
 }
 .ez_list tr.ez_row:hover .ez_chk {
 	border-color: var(--ez-fg-dim);
+}
+.ez_list tr.ez_row.on .ez_chk {
+	border-color: var(--ez-accent);
 }
 .ez_nmc {
 	display: flex;
