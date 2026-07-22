@@ -370,23 +370,26 @@ html.ez #ez {
 
 /* ---- contextual action bar ---- */
 
+/* the selection bar replaces the toolbar row in the same slot, with the
+   same box model, so selecting never shifts the file list */
 .ez_selbar {
 	display: none;
 	align-items: center;
 	gap: .5em;
 	flex-wrap: wrap;
-	background: var(--ez-surface);
-	border: 1px solid var(--ez-border);
-	border-radius: var(--ez-radius);
-	padding: .6em .75em;
-	margin: 0 0 1.25em;
+	margin-bottom: 1.25em;
 }
 .ez_selbar.act {
 	display: flex;
 }
+#ez.picking .ez_bar2 {
+	display: none;
+}
 .ez_seln {
 	font-weight: 500;
+	color: var(--ez-accent);
 	margin-right: .35em;
+	white-space: nowrap;
 }
 .ez_btn.ez_dang:hover {
 	background: #b91c1c;
