@@ -279,14 +279,36 @@ html.ez #wrap {
 	text-align: left;
 }
 
-/* keep only the login heading and the login form */
+/* the back button never shows on the full expert splash */
+#ezback {
+	display: none;
+}
+
+/* keep only the back button, login heading and the login form */
 html.ez #wrap > * {
 	display: none !important;
 }
+html.ez #wrap > a#ezback,
 html.ez #wrap > h1#l,
 html.ez #wrap > h1#z,
 html.ez #wrap > div:has(#lf) {
 	display: block !important;
+}
+html.ez #wrap > a#ezback {
+	display: inline-block !important;
+	width: auto;
+	background: none !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	color: #9aa1ae !important;
+	text-decoration: none;
+	font-size: .9em;
+	padding: 0;
+	margin: 0 0 1em;
+}
+html.ez #wrap > a#ezback:hover {
+	color: #f0b429 !important;
+	background: none !important;
 }
 html.ez #wrap h1 {
 	font-size: 1.3em;
