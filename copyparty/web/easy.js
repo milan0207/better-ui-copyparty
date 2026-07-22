@@ -489,6 +489,52 @@ var ezmode = (function () {
 
 	// ---- in-page viewer ------------------------------------------------
 
+	// the ?v markdown viewer ships copyparty's own breadcrumb (#mn) and
+	// editor toolbar (#mh); inside the modal those are just clutter, and
+	// clicking "top" navigates the iframe itself -- loading the whole app
+	// into the modal. hide the chrome and route any link through easy mode
+	function tame(f) {
+		var idoc;
+		try { idoc = f.contentDocument; } catch (ex) { return; }
+		if (!idoc)
+			return;
+
+		try {
+			var st = idoc.createElement('style');
+			st.textContent = '#mn,#mh{display:none!important}';
+			idoc.head.appendChild(st);
+		} catch (ex) { }
+
+		idoc.addEventListener('click', function (e) {
+			var a = e.target && e.target.closest && e.target.closest('a[href]');
+			if (!a)
+				return;
+
+			var href = a.getAttribute('href') || '';
+			if (!href || href.charAt(0) === '#')
+				return;
+
+			var u;
+			try { u = new URL(href, f.contentWindow.location.href); }
+			catch (ex) { return; }
+
+			// external links open in a new tab; don't hijack them
+			if (u.origin !== location.origin) {
+				a.target = '_blank';
+				return;
+			}
+
+			e.preventDefault();
+			r.close();
+			if (/\/$/.test(u.pathname)) {
+				filt = '';
+				treectl.reqls(u.pathname, true);
+			}
+			else
+				location.href = u.pathname + u.search;
+		}, true);
+	}
+
 	function mkovl() {
 		ovl = mknod('div', 'ezov');
 		ovl.innerHTML =
@@ -551,8 +597,13 @@ var ezmode = (function () {
 		else if (k == 'text' && /^(md|markdown)$/.test(e)) {
 			// copyparty's ?v viewer renders markdown nicely; but for plain
 			// text it shows a blank page, so only route markdown here
-			var vurl = /[?&]v(&|=|$)/.test(url) ? url : addq(url, 'v');
-			body.innerHTML = '<iframe class="ezov_doc" src="' + esc2(vurl) + '"></iframe>';
+			var vurl = /[?&]v(&|=|$)/.test(url) ? url : addq(url, 'v'),
+				f = mknod('iframe');
+
+			f.className = 'ezov_doc';
+			f.onload = function () { tame(f); };
+			f.setAttribute('src', vurl);
+			body.appendChild(f);
 		}
 		else if (k == 'text') {
 			// plain text / code: fetch the raw bytes and show them readably
