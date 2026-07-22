@@ -338,18 +338,30 @@ html.ez #ez {
 .ez_chk:focus-visible {
 	opacity: 1;
 }
-.ez_tile.on .ez_chk {
+.ez_tile.on .ez_chk,
+.ez_row.on .ez_chk {
 	background: var(--ez-accent);
 	border-color: var(--ez-accent);
 	opacity: 1;
 }
-.ez_tile.on .ez_chk::after {
+.ez_tile.on .ez_chk::after,
+.ez_row.on .ez_chk::after {
 	content: '';
 	position: absolute;
 	inset: 0;
 	background-color: var(--ez-accent-fg);
 	-webkit-mask: var(--ez-check) no-repeat center / 78%;
 	mask: var(--ez-check) no-repeat center / 78%;
+}
+/* a plain mouse click on the checkbox leaves it focused; the filled
+   amber state already signals selection, so only show a ring for real
+   keyboard focus, and keep it tight to the box */
+.ez_chk:focus:not(:focus-visible) {
+	outline: none;
+}
+.ez_chk:focus-visible {
+	outline: 2px solid var(--ez-accent);
+	outline-offset: 1px;
 }
 .ez_tile.on {
 	border-color: var(--ez-accent);
