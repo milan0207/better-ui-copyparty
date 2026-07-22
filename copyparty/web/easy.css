@@ -867,3 +867,21 @@ html.ez #rui #rn_f td:first-child {
 	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h7l5 5v13H6zM13 3v5h5M12 12v6M9 15h6'/%3E%3C/svg%3E");
 	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h7l5 5v13H6zM13 3v5h5M12 12v6M9 15h6'/%3E%3C/svg%3E");
 }
+
+/* compact back button, sits ahead of the toolbar actions */
+.ez_back {
+	padding: .45em;
+	flex: none;
+}
+.ez_back .ez_i {
+	width: 1.05em;
+	height: 1.05em;
+}
+.ez_back[disabled] {
+	opacity: .35;
+	pointer-events: none;
+}
+.ez_i_back {
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E");
+}

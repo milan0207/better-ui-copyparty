@@ -141,6 +141,7 @@ if (1)
 		"ez_expert": "Expert mode",
 		"ez_easy": "Easy mode",
 		"ez_empty": "This folder is empty",
+		"ez_back": "Back",
 		"ez_newdir": "New folder",
 		"ez_newfile": "New file",
 		"ez_cut": "Cut",

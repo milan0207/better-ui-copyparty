@@ -159,6 +159,15 @@ var ezmode = (function () {
 		return h.join('');
 	};
 
+	// parent folder of the current path; stays put at the site root
+	r.parent = function () {
+		return get_evpath().replace(/[^/]+\/+$/, '') || '/';
+	};
+
+	r.atRoot = function () {
+		return r.parent() === get_evpath();
+	};
+
 	function btn(id, ico, label, cls) {
 		return '<button class="ez_btn ' + (cls || '') + '" id="' + id + '">' +
 			(ico ? '<i class="ez_i ez_i_' + ico + '"></i>' : '') + esc2(label) + '</button>';
@@ -182,6 +191,9 @@ var ezmode = (function () {
 		h.push('</div>');
 
 		h.push('<div class="ez_bar ez_bar2">');
+		h.push('<button class="ez_btn ez_back" id="ez_back"' +
+			(r.atRoot() ? ' disabled' : '') + ' title="' + esc2(tl('ez_back', 'Back')) +
+			'"><i class="ez_i ez_i_back"></i></button>');
 		if (may('write')) {
 			h.push(btn('ez_up', 'up', tl('ez_upload', 'Upload'), 'ez_pri'));
 			h.push(btn('ez_mkdir', 'folderadd', tl('ez_newdir', 'New folder')));
@@ -372,6 +384,15 @@ var ezmode = (function () {
 
 		var b = ebi('ez_qx');
 		if (b) b.onclick = function (e) { ev(e); filt = ''; r.render(); };
+
+		b = ebi('ez_back');
+		if (b) b.onclick = function (e) {
+			ev(e);
+			if (!r.atRoot()) {
+				filt = '';
+				treectl.reqls(r.parent(), true);
+			}
+		};
 
 		b = ebi('ez_up');
 		if (b) b.onclick = function (e) { ev(e); r.upload(); };
