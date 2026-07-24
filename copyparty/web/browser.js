@@ -133,48 +133,6 @@ if (1)
 		"ot_u2w": 'up2k: upload files with resume support (close your browser and drop the same files in later)$N$Nmultithreaded, and file timestamps are preserved, but it uses more CPU than [🎈]&nbsp; (the basic uploader)<br /><br />during uploads, this icon becomes a progress indicator!',
 		"ot_noie": 'Please use Chrome / Firefox / Edge',
 
-		"ez_home": "Home",
-		"ez_folder": "Folder",
-		"ez_upload": "Upload",
-		"ez_zip": "Download all",
-		"ez_dl": "Download",
-		"ez_expert": "Expert mode",
-		"ez_easy": "Easy mode",
-		"ez_empty": "This folder is empty",
-		"ez_back": "Back",
-		"ez_login": "Login",
-		"ez_account": "Account",
-		"ez_newdir": "New folder",
-		"ez_newfile": "New file",
-		"ez_cut": "Cut",
-		"ez_copy": "Copy",
-		"ez_paste": "Paste",
-		"ez_share": "Share",
-		"ez_view": "Switch view",
-		"ez_searchph": "Search this folder",
-		"ez_nohit": "Nothing matches your search",
-		"ez_cname": "Name",
-		"ez_cdate": "Date",
-		"ez_ctype": "Type",
-		"ez_csize": "Size",
-		"ez_eexist": "Something with that name already exists",
-		"ez_okdir": "Folder created",
-		"ez_okfile": "File created",
-		"ez_download": "Download",
-		"ez_zipsel": "Download as zip",
-		"ez_rename": "Rename",
-		"ez_delete": "Delete",
-		"ez_clear": "Clear",
-		"ez_select": "Select",
-		"ez_nsel": "{0} selected",
-		"ez_noprev": "No preview available",
-		"ez_zipping": "Preparing your download...",
-		"ez_updone": "Upload finished",
-		"ez_enoup": "Uploads are not available here",
-
-		"ff_ph": "filter",
-		"ff_tt": "hide files in this folder that don't match$NHotkey: Esc to clear",
-
 		"ab_mkdir": "make directory",
 		"ab_mkdoc": "new textfile",
 		"ab_msg": "send msg to srv log",
@@ -203,10 +161,10 @@ if (1)
 
 		"ul_par": "parallel uploads:",
 		"ut_rand": "randomize filenames",
-		"ut_u2ts": "copy the last-modified timestamp$Nfrom your filesystem to the server\">",
+		"ut_u2ts": "copy the last-modified timestamp$Nfrom your filesystem to the server\">📅",
 		"ut_ow": "overwrite existing files on the server?$N🛡️: never (will generate a new filename instead)$N🕒: overwrite if server-file is older than yours$N♻️: always overwrite if the files are different$N⏭️: unconditionally skip all existing files",
 		"ut_mt": "continue hashing other files while uploading$N$Nmaybe disable if your CPU or HDD is a bottleneck",
-		"ut_ask": 'ask for confirmation before upload starts">',
+		"ut_ask": 'ask for confirmation before upload starts">💭',
 		"ut_pot": "improve upload speed on slow devices$Nby making the UI less complex",
 		"ut_srch": "don't actually upload, instead check if the files already $N exist on the server (will scan all folders you can read)",
 		"ut_par": "pause uploads by setting it to 0$N$Nincrease if your connection is slow / high latency$N$Nkeep it 1 on LAN or if the server HDD is a bottleneck",
@@ -272,23 +230,23 @@ if (1)
 		"cl_rcm": "right-click menu",
 		"cl_gauto": "autogrid",
 
-		"ct_grid": 'the grid',
-		"ct_ttips": '◔ ◡ ◔">tooltips',
-		"ct_thumb": 'in grid-view, toggle icons or thumbnails$NHotkey: T">thumbs',
+		"ct_grid": '田 the grid',
+		"ct_ttips": '◔ ◡ ◔">ℹ️ tooltips',
+		"ct_thumb": 'in grid-view, toggle icons or thumbnails$NHotkey: T">🖼️ thumbs',
 		"ct_csel": 'use CTRL and SHIFT for file selection in grid-view">sel',
 		"ct_dsel": 'use drag-selection in grid-view">dsel',
 		"ct_dl": 'force download (don\'t display inline) when a file is clicked">dl',
-		"ct_ihop": 'when the image viewer is closed, scroll down to the last viewed file">g',
+		"ct_ihop": 'when the image viewer is closed, scroll down to the last viewed file">g⮯',
 		"ct_dots": 'show hidden files (if server permits)">dotfiles',
 		"ct_qdel": 'when deleting files, only ask for confirmation once">qdel',
-		"ct_dir1st": 'sort folders before files">first',
+		"ct_dir1st": 'sort folders before files">📁 first',
 		"ct_nsort": 'natural sort (for filenames with leading digits)">nsort',
 		"ct_utc": 'show all datetimes in UTC">UTC',
-		"ct_readme": 'show README.md in folder listings">readme',
+		"ct_readme": 'show README.md in folder listings">📜 readme',
 		"ct_idxh": 'show index.html instead of folder listing">htm',
 		"ct_sbars": 'show scrollbars">⟊',
 
-		"cut_umod": "if a file already exists on the server, update the server's last-modified timestamp to match your local file (requires write+delete permissions)\">re",
+		"cut_umod": "if a file already exists on the server, update the server's last-modified timestamp to match your local file (requires write+delete permissions)\">re📅",
 
 		"cut_turbo": "the yolo button, you probably DO NOT want to enable this:$N$Nuse this if you were uploading a huge amount of files and had to restart for some reason, and want to continue the upload ASAP$N$Nthis replaces the hash-check with a simple <em>&quot;does this have the same filesize on the server?&quot;</em> so if the file contents are different it will NOT be uploaded$N$Nyou should turn this off when the upload is done, and then &quot;upload&quot; the same files again to let the client verify them\">turbo",
 
@@ -337,25 +295,25 @@ if (1)
 		"ml_drc": "dynamic range compressor",
 		"ml_ss": "skip silence",
 
-		"mt_loop": "loop/repeat one song\">",
-		"mt_one": "stop after one song\">1",
-		"mt_shuf": "shuffle the songs in each folder\">",
+		"mt_loop": "loop/repeat one song\">🔁",
+		"mt_one": "stop after one song\">1️⃣",
+		"mt_shuf": "shuffle the songs in each folder\">🔀",
 		"mt_aplay": "autoplay if there is a song-ID in the link you clicked to access the server$N$Ndisabling this will also stop the page URL from being updated with song-IDs when playing music, to prevent autoplay if these settings are lost but the URL remains\">a▶",
 		"mt_preload": "start loading the next song near the end for gapless playback\">preload",
 		"mt_prescan": "go to the next folder before the last song$Nends, keeping the webbrowser happy$Nso it doesn't stop the playback\">nav",
 		"mt_fullpre": "try to preload the entire song;$N✅ enable on <b>unreliable</b> connections,$N❌ <b>disable</b> on slow connections probably\">full",
-		"mt_fau": "on phones, prevent music from stopping if the next song doesn't preload fast enough (can make tags display glitchy)\">",
+		"mt_fau": "on phones, prevent music from stopping if the next song doesn't preload fast enough (can make tags display glitchy)\">☕️",
 		"mt_waves": "waveform seekbar:$Nshow audio amplitude in the scrubber\">~s",
 		"mt_npclip": "show buttons for clipboarding the currently playing song\">/np",
-		"mt_m3u_c": "show buttons for clipboarding the$Nselected songs as m3u8 playlist entries\">",
+		"mt_m3u_c": "show buttons for clipboarding the$Nselected songs as m3u8 playlist entries\">📻",
 		"mt_octl": "os integration (media hotkeys / osd)\">os-ctl",
 		"mt_oseek": "allow seeking through os integration$N$Nnote: on some devices (iPhones),$Nthis replaces the next-song button\">seek",
 		"mt_oscv": "show album cover in osd\">art",
-		"mt_follow": "keep the playing track scrolled into view\">",
+		"mt_follow": "keep the playing track scrolled into view\">🎯",
 		"mt_compact": "compact controls\">⟎",
 		"mt_uncache": "clear cache &nbsp;(try this if your browser cached$Na broken copy of a song so it refuses to play)\">uncache",
-		"mt_mloop": "loop the open folder\">loop",
-		"mt_mnext": "load the next folder and continue\">next",
+		"mt_mloop": "loop the open folder\">🔁 loop",
+		"mt_mnext": "load the next folder and continue\">📂 next",
 		"mt_mstop": "stop playback\">⏸ stop",
 		"mt_cflac": "convert flac / wav to {0}\">flac",
 		"mt_caac": "convert aac / m4a to {0}\">aac",
@@ -431,9 +389,9 @@ if (1)
 		"fs_sc": "share the folder you're in",
 		"fs_ss": "share the selected files",
 		"fs_just1d": "you cannot select more than one folder,\nor mix files and folders in one selection",
-		"fs_abrt": "abort",
+		"fs_abrt": "❌ abort",
 		"fs_rand": "🎲 rand.name",
-		"fs_go": "create share",
+		"fs_go": "✅ create share",
 		"fs_name": "name",
 		"fs_src": "source",
 		"fs_pwd": "passwd",
@@ -449,8 +407,8 @@ if (1)
 		"fs_ok": "press <code>Enter/OK</code> to Clipboard\npress <code>ESC/Cancel</code> to Close",
 
 		"frt_dec": "may fix some cases of broken filenames\">url-decode",
-		"frt_rst": "reset modified filenames back to the original ones\">reset",
-		"frt_abrt": "abort and close this window\">cancel",
+		"frt_rst": "reset modified filenames back to the original ones\">↺ reset",
+		"frt_abrt": "abort and close this window\">❌ cancel",
 		"frb_apply": "APPLY RENAME",
 		"fr_adv": "batch / metadata / pattern renaming\">advanced",
 		"fr_case": "case-sensitive regex\">case",
@@ -512,24 +470,24 @@ if (1)
 		"tv_xe1": "could not load textfile:\n\nerror ",
 		"tv_xe2": "404, file not found",
 		"tv_lst": "list of textfiles in",
-		"tvt_close": "return to folder view$NHotkey: M (or Esc)\">close",
-		"tvt_dl": "download this file$NHotkey: Y\">download",
-		"tvt_prev": "show previous document$NHotkey: i\">prev",
-		"tvt_next": "show next document$NHotkey: K\">next",
+		"tvt_close": "return to folder view$NHotkey: M (or Esc)\">❌ close",
+		"tvt_dl": "download this file$NHotkey: Y\">💾 download",
+		"tvt_prev": "show previous document$NHotkey: i\">⬆ prev",
+		"tvt_next": "show next document$NHotkey: K\">⬇ next",
 		"tvt_sel": "select file &nbsp; ( for cut / copy / delete / ... )$NHotkey: S\">sel",
 		"tvt_j": "beautify json$NHotkey: shift-J\">j",
-		"tvt_edit": "open file in text editor$NHotkey: E\">edit",
-		"tvt_tail": "monitor file for changes; show new lines in real time\">follow",
-		"tvt_wrap": "word-wrap\">",
-		"tvt_atail": "lock scroll to bottom of page\">",
-		"tvt_ctail": "decode terminal colors (ansi escape codes)\">",
+		"tvt_edit": "open file in text editor$NHotkey: E\">✏️ edit",
+		"tvt_tail": "monitor file for changes; show new lines in real time\">📡 follow",
+		"tvt_wrap": "word-wrap\">↵",
+		"tvt_atail": "lock scroll to bottom of page\">⚓",
+		"tvt_ctail": "decode terminal colors (ansi escape codes)\">🌈",
 		"tvt_ntail": "scrollback limit (how many bytes of text to keep loaded)",
 
 		"m3u_add1": "song added to m3u playlist",
 		"m3u_addn": "{0} songs added to m3u playlist",
 		"m3u_clip": "m3u playlist now copied to clipboard\n\nyou should create a new textfile named something.m3u and paste the playlist in that document; this will make it playable",
 
-		"gt_vau": "don't show videos, just play the audio\">",
+		"gt_vau": "don't show videos, just play the audio\">🎧",
 		"gt_msel": "enable file selection; ctrl-click a file to override$N$N&lt;em&gt;when active: doubleclick a file / folder to open it&lt;/em&gt;$N$NHotkey: S\">multiselect",
 		"gt_crop": "center-crop thumbnails\">crop",
 		"gt_3x": "hi-res thumbnails\">3x",
@@ -842,16 +800,16 @@ modal.load();
 
 // toolbar
 ebi('ops').innerHTML = (
-	'<a href="#" id="opa_x" data-dest="" tt="' + L.ot_close + '"></a>' +
-	'<a href="#" id="opa_srch" data-perm="read" data-dep="idx" data-dest="search" tt="' + L.ot_search + '"></a>' +
-	(have_del ? '<a href="#" id="opa_del" data-perm="write" data-dest="unpost" tt="' + L.ot_unpost + '"></a>' : '') +
-	'<a href="#" id="opa_up" data-dest="up2k"></a>' +
-	'<a href="#" id="opa_bup" data-perm="write" data-dest="bup" tt="' + L.ot_bup + '"></a>' +
-	'<a href="#" id="opa_mkd" data-perm="write" data-dest="mkdir" tt="' + L.ot_mkdir + '"></a>' +
-	'<a href="#" id="opa_md" data-perm="read write" data-dest="new_md" tt="' + L.ot_md + '"></a>' +
-	'<a href="#" id="opa_msg" data-dest="msg" tt="' + L.ot_msg + '"></a>' +
-	'<a href="#" id="opa_auc" data-dest="player" tt="' + L.ot_mp + '"></a>' +
-	'<a href="#" id="opa_cfg" data-dest="cfg" tt="' + L.ot_cfg + '"></a>' +
+	'<a href="#" id="opa_x" data-dest="" tt="' + L.ot_close + '">--</a>' +
+	'<a href="#" id="opa_srch" data-perm="read" data-dep="idx" data-dest="search" tt="' + L.ot_search + '">🔎</a>' +
+	(have_del ? '<a href="#" id="opa_del" data-perm="write" data-dest="unpost" tt="' + L.ot_unpost + '">🧯</a>' : '') +
+	'<a href="#" id="opa_up" data-dest="up2k">🚀</a>' +
+	'<a href="#" id="opa_bup" data-perm="write" data-dest="bup" tt="' + L.ot_bup + '">🎈</a>' +
+	'<a href="#" id="opa_mkd" data-perm="write" data-dest="mkdir" tt="' + L.ot_mkdir + '">📂</a>' +
+	'<a href="#" id="opa_md" data-perm="read write" data-dest="new_md" tt="' + L.ot_md + '">📝</a>' +
+	'<a href="#" id="opa_msg" data-dest="msg" tt="' + L.ot_msg + '">📟</a>' +
+	'<a href="#" id="opa_auc" data-dest="player" tt="' + L.ot_mp + '">🎺</a>' +
+	'<a href="#" id="opa_cfg" data-dest="cfg" tt="' + L.ot_cfg + '">⚙️</a>' +
 	(IE ? '<span id="noie">' + L.ot_noie + '</span>' : '') +
 	'<div id="opdesc"></div>'
 );
@@ -862,31 +820,31 @@ ebi('widget').innerHTML = (
 	'<div id="wtoggle">' +
 	'<span id="wfs"></span>' +
 	'<span id="wfm"><a' +
-	' href="#" id="fshr" tt="' + L.wt_shr + '"><span>share</span></a><a' +
-	' href="#" id="fren" tt="' + L.wt_ren + '"><span>name</span></a><a' +
-	' href="#" id="fdel" tt="' + L.wt_del + '"><span>del.</span></a><a' +
-	' href="#" id="fcut" tt="' + L.wt_cut + '"><span>cut</span></a><a' +
-	' href="#" id="fcpy" tt="' + L.wt_cpy + '"><span>copy</span></a><a' +
-	' href="#" id="fpst" tt="' + L.wt_pst + '"><span>paste</span></a>' +
+	' href="#" id="fshr" tt="' + L.wt_shr + '">📨<span>share</span></a><a' +
+	' href="#" id="fren" tt="' + L.wt_ren + '">✎<span>name</span></a><a' +
+	' href="#" id="fdel" tt="' + L.wt_del + '">⌫<span>del.</span></a><a' +
+	' href="#" id="fcut" tt="' + L.wt_cut + '">✂<span>cut</span></a><a' +
+	' href="#" id="fcpy" tt="' + L.wt_cpy + '">⧉<span>copy</span></a><a' +
+	' href="#" id="fpst" tt="' + L.wt_pst + '">📋<span>paste</span></a>' +
 	'</span><span id="wzip1"><a' +
-	' href="#" id="zip1" tt="' + L.wt_zip1 + '"><span>zip</span></a>' +
+	' href="#" id="zip1" tt="' + L.wt_zip1 + '">📦<span>zip</span></a>' +
 	'</span><span id="wzip"><a' +
 	' href="#" id="selall" tt="' + L.wt_selall + '">sel.<br />all</a><a' +
 	' href="#" id="selinv" tt="' + L.wt_selinv + '">sel.<br />inv.</a><a' +
 	' href="#" id="selzip" class="l1" tt="' + L.wt_selzip + '">zip</a><a' +
 	' href="#" id="seldl" class="l1" tt="' + L.wt_seldl + '">dl</a>' +
 	'</span><span id="wnp"><a' +
-	' href="#" id="npirc" tt="' + L.wt_npirc + '"><span>irc</span></a><a' +
-	' href="#" id="nptxt" tt="' + L.wt_nptxt + '"><span>txt</span></a>' +
+	' href="#" id="npirc" tt="' + L.wt_npirc + '">📋<span>irc</span></a><a' +
+	' href="#" id="nptxt" tt="' + L.wt_nptxt + '">📋<span>txt</span></a>' +
 	'</span><span id="wm3u"><a' +
-	' href="#" id="m3ua" tt="' + L.wt_m3ua + '"><span>add</span></a><a' +
-	' href="#" id="m3uc" tt="' + L.wt_m3uc + '"><span>copy</span></a>' +
+	' href="#" id="m3ua" tt="' + L.wt_m3ua + '">📻<span>add</span></a><a' +
+	' href="#" id="m3uc" tt="' + L.wt_m3uc + '">📻<span>copy</span></a>' +
 	'</span><a' +
-	'	href="#" id="wtgrid" tt="' + L.wt_grid + '"></a><a' +
-	'	href="#" id="wtico"></a>' +
+	'	href="#" id="wtgrid" tt="' + L.wt_grid + '">田</a><a' +
+	'	href="#" id="wtico">♫</a>' +
 	'</div>' +
 	'<div id="widgeti">' +
-	'	<div id="pctl"><a href="#" id="bprev" tt="' + L.wt_prev + '"></a><a href="#" id="bplay" class="play" tt="' + L.wt_play + '"></a><a href="#" id="bnext" tt="' + L.wt_next + '"></a></div>' +
+	'	<div id="pctl"><a href="#" id="bprev" tt="' + L.wt_prev + '">⏮</a><a href="#" id="bplay" tt="' + L.wt_play + '">▶</a><a href="#" id="bnext" tt="' + L.wt_next + '">⏭</a></div>' +
 	'	<canvas id="pvol" width="288" height="38"></canvas>' +
 	'	<canvas id="barpos"></canvas>' +
 	'	<canvas id="barbuf"></canvas>' +
@@ -1002,8 +960,8 @@ x.parentNode.insertBefore(mknod('div', null,
 	var o = mknod('div');
 	o.innerHTML = (
 		'<div id="drops">\n' +
-		'	<div class="dropdesc" id="up_zd"><div> ' + L.udt_up + '<br /><span></span><div><b>' + L.udt_up + '</b></div><div><b>' + L.udt_up + '</b></div></div></div>\n' +
-		'	<div class="dropdesc" id="srch_zd"><div> ' + L.udt_srch + '<br /><span></span><div><b>' + L.udt_srch + '</b></div><div><b>' + L.udt_srch + '</b></div></div></div>\n' +
+		'	<div class="dropdesc" id="up_zd"><div>🚀 ' + L.udt_up + '<br /><span></span><div>🚀<b>' + L.udt_up + '</b></div><div><b>' + L.udt_up + '</b>🚀</div></div></div>\n' +
+		'	<div class="dropdesc" id="srch_zd"><div>🔎 ' + L.udt_srch + '<br /><span></span><div>🔎<b>' + L.udt_srch + '</b></div><div><b>' + L.udt_srch + '</b>🔎</div></div></div>\n' +
 		'	<div class="dropzone" id="up_dz" v="up_zd"></div>\n' +
 		'	<div class="dropzone" id="srch_dz" v="srch_zd"></div>\n' +
 		'</div>'
@@ -1084,15 +1042,15 @@ ebi('op_cfg').innerHTML = (
 	'		<a id="u2turbo" class="tgl btn ttb" href="#" tt="' + L.cut_turbo + '</a>\n' +
 	'		<a id="u2tdate" class="tgl btn ttb" href="#" tt="' + L.cut_datechk + '</a>\n' +
 	'		<input type="text" id="u2szg" value="" ' + NOAC + ' style="width:3em" tt="' + L.cut_u2sz + '" />' +
-	'		<a id="flag_en" class="tgl btn" href="#" tt="' + L.cut_flag + '"></a>\n' +
+	'		<a id="flag_en" class="tgl btn" href="#" tt="' + L.cut_flag + '">💤</a>\n' +
 	'		<a id="u2sort" class="tgl btn" href="#" tt="' + L.cut_az + '">az</a>\n' +
-	'		<a id="upnag" class="tgl btn" href="#" tt="' + L.cut_nag + '"></a>\n' +
-	'		<a id="upsfx" class="tgl btn" href="#" tt="' + L.cut_sfx + '"></a>\n' +
+	'		<a id="upnag" class="tgl btn" href="#" tt="' + L.cut_nag + '">🔔</a>\n' +
+	'		<a id="upsfx" class="tgl btn" href="#" tt="' + L.cut_sfx + '">🔊</a>\n' +
 	'		</td>\n' +
 	'	</div>\n' +
 	'</div>\n' +
 	'<div>\n' +
-	'	<h3>' + L.cl_favico + ' <span id="ico1">◆</span></h3>\n' +
+	'	<h3>' + L.cl_favico + ' <span id="ico1">🎉</span></h3>\n' +
 	'	<div>\n' +
 	'		<input type="text" id="icot" value="" ' + NOAC + ' style="width:1.3em" tt="' + L.cft_text + '" />' +
 	'		<input type="text" id="icof" value="" ' + NOAC + ' style="width:2em" tt="' + L.cft_fg + '" />' +
@@ -1124,15 +1082,15 @@ ebi('op_cfg').innerHTML = (
 // navpane
 ebi('tree').innerHTML = (
 	'<div id="treeh">\n' +
-	'	<a href="#" id="detree" tt="' + L.tt_detree + '">...</a>\n' +
+	'	<a href="#" id="detree" tt="' + L.tt_detree + '">🍞...</a>\n' +
 	'	<a href="#" class="btn" step="2" id="twobytwo" tt="Hotkey: D">+</a>\n' +
 	'	<a href="#" class="btn" step="-2" id="twig" tt="Hotkey: A">&ndash;</a>\n' +
-	'	<a href="#" class="btn" id="visdir" tt="' + L.tt_visdir + '"></a>\n' +
-	'	<a href="#" class="tgl btn" id="filetree" tt="' + L.tt_ftree + '"></a>\n' +
-	'	<a href="#" class="tgl btn" id="parpane" tt="' + L.tt_pdock + '"></a>\n' +
+	'	<a href="#" class="btn" id="visdir" tt="' + L.tt_visdir + '">🎯</a>\n' +
+	'	<a href="#" class="tgl btn" id="filetree" tt="' + L.tt_ftree + '">📃</a>\n' +
+	'	<a href="#" class="tgl btn" id="parpane" tt="' + L.tt_pdock + '">📌</a>\n' +
 	'	<a href="#" class="tgl btn" id="dyntree" tt="' + L.tt_dynt + '">a</a>\n' +
 	'	<a href="#" class="tgl btn" id="wraptree" tt="' + L.tt_wrap + '">↵</a>\n' +
-	'	<a href="#" class="tgl btn" id="hovertree" tt="' + L.tt_hover + '"></a>\n' +
+	'	<a href="#" class="tgl btn" id="hovertree" tt="' + L.tt_hover + '">👀</a>\n' +
 	'</div>\n' +
 	'<ul id="docul"></ul>\n' +
 	'<ul class="ntree" id="treepar"></ul>\n' +
@@ -2035,7 +1993,7 @@ var widget = (function () {
 	r.paused = function (paused) {
 		if (was_paused != paused) {
 			was_paused = paused;
-			ebi('bplay').className = paused ? 'play' : 'pause';
+			ebi('bplay').innerHTML = paused ? '▶' : '⏸';
 		}
 	};
 	r.setvis = function () {
@@ -4011,9 +3969,8 @@ var fileman = (function () {
 			hpst = !(have_mv && has(perms, 'write')),
 			hshr = !can_shr || !get_evpath().indexOf(have_shr);
 
-		// `hide` now means "not permitted here" only; having nothing
-		// selected leaves the buttons visible but disabled, so the
-		// available actions are discoverable before selecting anything
+		if (!(enren || endel || encut || enpst))
+			hren = hdel = hcut = hpst = true;
 
 		clmod(bren, 'en', enren);
 		clmod(bdel, 'en', endel);
@@ -4028,7 +3985,7 @@ var fileman = (function () {
 		clmod(bpst, 'hide', hpst);
 		clmod(bshr, 'hide', hshr);
 
-		clmod(ebi('wfm'), 'act', QS('#wfm a:not(.hide)'));
+		clmod(ebi('wfm'), 'act', QS('#wfm a.en:not(.hide)'));
 		clmod(ebi('wtoggle'), 'm3u', mpl.m3uen && (nsel || (mp && mp.au)));
 
 		var wfs = ebi('wfs'), h = '';
@@ -4338,7 +4295,7 @@ var fileman = (function () {
 
 		html = html.concat([
 			'<button id="rn_cancel" tt="' + L.frt_abrt + '</button>',
-			'<button id="rn_apply">' + L.frb_apply + '</button>',
+			'<button id="rn_apply">✅ ' + L.frb_apply + '</button>',
 			'<a id="rn_adv" class="tgl btn" href="#" tt="' + L.fr_adv + '</a>',
 			'<a id="rn_case" class="tgl btn" href="#" tt="' + L.fr_case + '</a>',
 			'<a id="rn_win" class="tgl btn" href="#" tt="' + L.fr_win + '</a>',
@@ -4352,8 +4309,8 @@ var fileman = (function () {
 			'<code>n.d=</code><input type="text" id="rn_n_d" placeholder="1" ' + NOAC + ' /> &nbsp;',
 			'<code>n.s=</code><input type="text" id="rn_n_s" placeholder="1" ' + NOAC + ' />',
 			'</td></tr>',
-			'<button id="rn_pdel">' + L.fr_pdel + '</button>',
-			'<button id="rn_pnew">' + L.fr_pnew + '</button>',
+			'<button id="rn_pdel">❌ ' + L.fr_pdel + '</button>',
+			'<button id="rn_pnew">💾 ' + L.fr_pnew + '</button>',
 			'</td></tr>',
 			'</table></div>'
 		]);
@@ -4867,7 +4824,7 @@ var fileman = (function () {
 				'<div>',
 				'<button id="rn_cancel" tt="' + L.frt_abrt + '</button>',
 				'<button id="rn_skip">⏭ ' + L.fp_skip + '</button>',
-				'<button id="rn_apply">' + L.fp_apply + '</button>',
+				'<button id="rn_apply">✅ ' + L.fp_apply + '</button>',
 				' &nbsp; src: ' + esc(r.clip[0].replace(/[^/]+$/, '')),
 				'</div>',
 				'<p id="cnmt"></p>',
@@ -5968,8 +5925,6 @@ var thegrid = (function () {
 		r.dirty = false;
 		r.bagit('#ggrid');
 		r.loadsel();
-		if (ffilter)  // innerHTML above dropped the filter classes
-			ffilter.apply();
 		aligngriditems();
 		setTimeout(r.tippen, 20);
 	}
@@ -6770,7 +6725,7 @@ var search_ui = (function () {
 
 		var html = mk_files_header(tagord), seen = {};
 		html.push('<tbody>');
-		html.push('<tr class="srch_hdr"><td>-</td><td><a href="#" id="unsearch"><big style="font-weight:bold">' + L.sl_close + '</big></a> -- ' + L.sl_hits.format(res.hits.length) + (res.trunc ? ' -- <a href="#" id="moar">' + L.sl_moar + '</a>' : '') + '</td></tr>');
+		html.push('<tr class="srch_hdr"><td>-</td><td><a href="#" id="unsearch"><big style="font-weight:bold">[❌] ' + L.sl_close + '</big></a> -- ' + L.sl_hits.format(res.hits.length) + (res.trunc ? ' -- <a href="#" id="moar">' + L.sl_moar + '</a>' : '') + '</td></tr>');
 
 		for (var a = 0; a < res.hits.length; a++) {
 			var r = res.hits[a],
@@ -8564,7 +8519,6 @@ var settheme = (function () {
 		var cl = document.documentElement.className;
 		cl = cl.replace(/\b(light|dark|[a-z]{1,2})\b/g, '').replace(/ +/g, ' ');
 		document.documentElement.className = cl + ' ' + theme + ' ';
-		place_wtoggle();
 
 		pbar.drawbuf();
 		pbar.drawpos();
@@ -8575,7 +8529,7 @@ var settheme = (function () {
 		var html = [],
 			cb = ebi('themes'),
 			itheme = ax.indexOf(theme[0]) * 2 + (light ? 1 : 0),
-			names = ['classic dark', 'classic light', 'pm-monokai', 'flat light', 'vice', 'hotdog stand', 'hacker', 'hi-con', 'phi95 dark', 'phi95', 'modern'];
+			names = ['classic dark', 'classic light', 'pm-monokai', 'flat light', 'vice', 'hotdog stand', 'hacker', 'hi-con', 'phi95 dark', 'phi95'];
 
 		for (var a = 0; a < themes; a++)
 			html.push('<option value="{0}">{0} ┃ {1}</option>'.format(a, names[a] || 'custom'));
@@ -10012,103 +9966,8 @@ function reload_mp() {
 }
 
 
-// the action bar docks bottom-right in the legacy themes, but belongs up
-// in the header in the modern one; #entree survives reload_browser, so
-// inserting before it keeps the bar across navigation
-function place_wtoggle() {
-	var wt = ebi('wtoggle'),
-		modern = / f /.test(' ' + document.documentElement.className + ' '),
-		dest = modern ? ebi('path') : ebi('widget');
-
-	if (!wt || !dest || wt.parentNode === dest)
-		return;
-
-	if (modern)
-		dest.insertBefore(wt, ebi('entree'));
-	else
-		dest.insertBefore(wt, dest.firstChild);  // back above #widgeti
-}
-
-
-// client-side filter for the listing currently on screen;
-// lives before #entree in #path so reload_browser doesn't eat it
-var ffilter = (function () {
-	var r = {},
-		inp = ebi('ffilter_i'),
-		cnt = ebi('ffilter_n'),
-		box = ebi('ffilter'),
-		q = '';
-
-	// other languages fall back to english until translated
-	inp.setAttribute('placeholder', L.ff_ph || 'filter');
-	box.setAttribute('tt', L.ff_tt || '');
-
-	r.apply = function () {
-		var rows = QSA('#files tbody tr'),
-			nhit = 0, ntot = 0;
-
-		for (var a = 0, aa = rows.length; a < aa; a++) {
-			var tr = rows[a],
-				td = tr.cells[1],
-				link = td && td.getElementsByTagName('a')[0];
-
-			if (!link)
-				continue;
-
-			ntot++;
-			var hit = !q || link.textContent.toLowerCase().indexOf(q) >= 0;
-			if (hit)
-				nhit++;
-
-			clmod(tr, 'ffhide', !hit);
-
-			if (tr.id) {
-				var g = QS('#ggrid>a[ref="' + tr.id + '"]');
-				if (g)
-					clmod(g, 'ffhide', !hit);
-			}
-		}
-
-		cnt.textContent = q ? nhit + '/' + ntot : '';
-		clmod(box, 'act', !!q);
-	};
-
-	r.reset = function () {
-		inp.value = q = '';
-		r.apply();
-	};
-
-	r.clear = function (e) {
-		ev(e);
-		r.reset();
-		inp.focus();
-	};
-
-	inp.oninput = function () {
-		q = inp.value.toLowerCase();
-		r.apply();
-	};
-
-	inp.onkeydown = function (e) {
-		// only swallow esc if we have something to clear, otherwise
-		// let it bubble to ahotkeys (close panel / exit grid / ...)
-		if ((e.key == 'Escape' || e.keyCode == 27) && q)
-			r.clear(e);
-	};
-
-	ebi('ffilter_x').onclick = r.clear;
-
-	return r;
-})();
-
-
 function reload_browser() {
 	filecols.set_style();
-	if (ffilter)  // may not exist yet during early init
-		ffilter.reset();
-
-	if (window.ezmode && ezmode.on)
-		ezmode.render();
 
 	var parts = get_evpath().split('/'),
 		rm = ebi('entree'),
