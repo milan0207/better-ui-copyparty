@@ -111,17 +111,6 @@ var ezmode = (function () {
 		return out;
 	}
 
-	function visible() {
-		if (!filt)
-			return items;
-
-		var o = [];
-		for (var a = 0; a < items.length; a++)
-			if (items[a].name.toLowerCase().indexOf(filt) + 1)
-				o.push(items[a]);
-
-		return o;
-	}
 
 	// push our selection into copyparty's own selection model
 	function sync() {
@@ -178,8 +167,7 @@ var ezmode = (function () {
 			return;
 
 		items = scan();
-		var vis = visible(),
-			h = [];
+		var h = [];
 
 		// --- header
 		h.push('<div class="ez_bar">');
@@ -241,14 +229,13 @@ var ezmode = (function () {
 		h.push(btn('ez_clr', '', tl('ez_clear', 'Clear'), 'ez_ghost'));
 		h.push('</div>');
 
-		if (!vis.length)
-			h.push('<div class="ez_empty">' + esc2(filt ?
-				tl('ez_nohit', 'Nothing matches your search') :
-				tl('ez_empty', 'This folder is empty')) + '</div>');
+		h.push('<div class="ez_empty" id="ez_empty"></div>');
 
 		// same negotiation the expert grid uses; falls back to jpeg
 		var thq = 'th=' + (window.have_jxl ? 'x' : window.have_webp === false ? 'j' : 'w');
 
+		// every item is rendered once; searching only toggles visibility,
+		// so filtering never rebuilds the dom or re-decodes thumbnails
 		if (view == 'list') {
 			h.push('<table class="ez_list"><thead><tr><th class="ez_c"></th><th>' +
 				esc2(tl('ez_cname', 'Name')) + '</th><th>' +
@@ -256,9 +243,8 @@ var ezmode = (function () {
 				esc2(tl('ez_ctype', 'Type')) + '</th><th class="ez_r">' +
 				esc2(tl('ez_csize', 'Size')) + '</th></tr></thead><tbody>');
 
-			for (var a = 0; a < vis.length; a++) {
-				var it = vis[a],
-					i = items.indexOf(it),
+			for (var i = 0; i < items.length; i++) {
+				var it = items[i],
 					nm = it.dir ? it.name.replace(/\/$/, '') : it.name,
 					k = it.dir ? 'folder' : kind(nm);
 
@@ -275,9 +261,8 @@ var ezmode = (function () {
 		}
 		else {
 			h.push('<div class="ez_grid">');
-			for (var a = 0; a < vis.length; a++) {
-				var it = vis[a],
-					i = items.indexOf(it),
+			for (var i = 0; i < items.length; i++) {
+				var it = items[i],
 					nm = it.dir ? it.name.replace(/\/$/, '') : it.name,
 					k = it.dir ? 'folder' : kind(nm),
 					// audio gets a spectrogram, so it is worth a thumb too
@@ -299,22 +284,70 @@ var ezmode = (function () {
 		}
 
 		box.innerHTML = h.join('');
+
+		// cache the row index once; parsing data-i per element on every
+		// tap and keystroke is pure overhead at a few hundred files
+		var els = QSA('#ez .ez_tile, #ez .ez_row');
+		for (var a = 0; a < els.length; a++) {
+			els[a]._ezi = parseInt(els[a].getAttribute('data-i'), 10);
+			els[a]._ezon = false;
+			els[a]._ezhit = true;
+		}
+
 		r.wire();
+		applyFilter();
 		paint();
 	};
 
-	// reflect selection without rebuilding the grid
+	// search without rebuilding: toggle a class on the existing nodes.
+	// keeps thumbnails decoded and costs one class write per item
+	function applyFilter() {
+		var els = QSA('#ez .ez_tile, #ez .ez_row'),
+			nvis = 0;
+
+		for (var a = 0; a < els.length; a++) {
+			var el = els[a],
+				it = items[el._ezi],
+				hit = !filt || !!(it && it.name.toLowerCase().indexOf(filt) + 1);
+
+			if (hit)
+				nvis++;
+
+			if (el._ezhit !== hit) {
+				el._ezhit = hit;
+				clmod(el, 'ez_hide', !hit);
+			}
+		}
+
+		var em = ebi('ez_empty');
+		if (em) {
+			em.textContent = filt ?
+				tl('ez_nohit', 'Nothing matches your search') :
+				tl('ez_empty', 'This folder is empty');
+			clmod(em, 'act', !nvis);
+		}
+	}
+
+	// reflect selection without rebuilding the grid.
+	// only writes className where it actually changed -- with a few hundred
+	// files, blindly re-setting every class is the bulk of a tap's cost
 	function paint() {
 		var els = QSA('#ez .ez_tile, #ez .ez_row'),
 			n = 0;
 
 		for (var a = 0; a < els.length; a++) {
-			var i = parseInt(els[a].getAttribute('data-i'), 10),
-				on = items[i] && items[i].tr.className.indexOf('sel') + 1;
+			var el = els[a],
+				it = items[el._ezi],
+				on = !!(it && it.tr.className.indexOf('sel') + 1),
+				was = el._ezon;
 
-			clmod(els[a], 'on', on);
 			if (on)
 				n++;
+
+			if (was !== on) {
+				el._ezon = on;
+				clmod(el, 'on', on);
+			}
 		}
 
 		clmod(box, 'picking', n);
@@ -353,48 +386,61 @@ var ezmode = (function () {
 			els[a].onload = function () { clmod(this.parentNode, 'has', 1); };
 		}
 
-		els = QSA('#ez .ez_chk');
-		for (a = 0; a < els.length; a++)
-			els[a].onclick = function (e) {
-				ev(e);
-				pick(parseInt(this.getAttribute('data-i'), 10));
-				sync();
-			};
+		// one delegated listener instead of two per item; with a few
+		// hundred files that is hundreds of handlers saved, which matters
+		// on mobile where attaching them stalls the first paint
+		box.onclick = function (e) {
+			var t = e.target;
+			if (!t || !t.closest)
+				return;
 
-		els = QSA('#ez .ez_tile, #ez .ez_row');
-		for (a = 0; a < els.length; a++)
-			els[a].onclick = function (e) {
-				var i = parseInt(this.getAttribute('data-i'), 10);
-				if (ctrl(e) || e.shiftKey || box.className.indexOf('picking') + 1) {
-					ev(e);
-					pick(i);
-					return sync();
-				}
+			var chk = t.closest('.ez_chk');
+			if (chk) {
 				ev(e);
-				r.open(i);
-			};
+				pick(parseInt(chk.getAttribute('data-i'), 10));
+				return sync();
+			}
+
+			var row = t.closest('.ez_tile, .ez_row');
+			if (!row)
+				return;
+
+			var i = parseInt(row.getAttribute('data-i'), 10);
+			if (ctrl(e) || e.shiftKey || box.className.indexOf('picking') + 1) {
+				ev(e);
+				pick(i);
+				return sync();
+			}
+			ev(e);
+			r.open(i);
+		};
 
 		var q = ebi('ez_q');
 		if (q) {
+			// filtering no longer rebuilds, so the input keeps focus and
+			// caret on its own -- no re-render, no refocus hack
 			q.oninput = function () {
 				filt = this.value.toLowerCase();
-				var at = this.selectionStart;
-				r.render();
-				var n = ebi('ez_q');
-				n.focus();
-				try { n.setSelectionRange(at, at); } catch (ex) { }
+				applyFilter();
 			};
 			q.onkeydown = function (e) {
 				if ((e.key == 'Escape' || e.keyCode == 27) && filt) {
 					ev(e);
 					filt = '';
-					r.render();
+					this.value = '';
+					applyFilter();
 				}
 			};
 		}
 
 		var b = ebi('ez_qx');
-		if (b) b.onclick = function (e) { ev(e); filt = ''; r.render(); };
+		if (b) b.onclick = function (e) {
+			ev(e);
+			filt = '';
+			var q = ebi('ez_q');
+			if (q) q.value = '';
+			applyFilter();
+		};
 
 		b = ebi('ez_back');
 		if (b) b.onclick = function (e) {
@@ -718,6 +764,49 @@ var ezmode = (function () {
 
 	// ---- mode ----------------------------------------------------------
 
+	// browser.js is stock and knows nothing about easy mode, so instead of
+	// patching it we watch the listing it maintains: any navigation, delete,
+	// paste or upload rewrites #files, and we redraw from that. coalesced
+	// through a timer because treectl rewrites the table row by row
+	var obs = null, redraw = null;
+
+	function watchList() {
+		if (obs || typeof MutationObserver === 'undefined')
+			return;
+
+		// watch #wrap, not #files: treectl assigns files.innerHTML (and in
+		// its fallback path replaces #files outright), so an observer bound
+		// to the table or tbody goes deaf after the first navigation.
+		// #wrap is stable and is a sibling of #ez, so our own renders can
+		// never retrigger this
+		var tb = ebi('wrap');
+		if (!tb)
+			return;
+
+		obs = new MutationObserver(function () {
+			if (!r.on || redraw)
+				return;
+
+			redraw = setTimeout(function () {
+				redraw = null;
+				if (r.on)
+					r.render();
+			}, 60);
+		});
+		obs.observe(tb, { childList: true, subtree: true });
+	}
+
+	function unwatchList() {
+		if (obs) {
+			obs.disconnect();
+			obs = null;
+		}
+		if (redraw) {
+			clearTimeout(redraw);
+			redraw = null;
+		}
+	}
+
 	r.set = function (v) {
 		r.on = !!v;
 		swrite('ezmode', r.on ? 'y' : 'n');
@@ -730,11 +819,13 @@ var ezmode = (function () {
 			}
 			view = sread('ezview') == 'list' ? 'list' : 'grid';
 			r.render();
+			watchList();
 			// up2k already owns body ondrop; watch so we can report the end
 			document.body.addEventListener('drop', r.watch, true);
 		}
 		else {
 			r.close();
+			unwatchList();
 			document.body.removeEventListener('drop', r.watch, true);
 			if (box)
 				box.innerHTML = '';

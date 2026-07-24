@@ -913,3 +913,60 @@ html.ezmode #ez {
 .ez_login {
 	flex: none;
 }
+
+/* ---- performance / mobile responsiveness ---- */
+
+/* search hides items instead of rebuilding the dom */
+.ez_hide {
+	display: none !important;
+}
+
+/* the empty/no-results message is only shown when it applies */
+.ez_empty {
+	display: none;
+}
+.ez_empty.act {
+	display: block;
+}
+
+/* html has touch-action:manipulation, but the interactive elements
+   themselves compute to auto; some mobile browsers still apply the
+   ~300ms double-tap delay unless the tapped element opts out too */
+html.ezmode .ez_btn,
+html.ezmode .ez_crumb,
+html.ezmode .ez_chk,
+html.ezmode .ez_tile,
+html.ezmode .ez_row,
+html.ezmode .ez_dl,
+html.ezmode .ez_qx,
+html.ezmode .ezov_b,
+html.ezmode .ezov_nav,
+html.ezmode a,
+html.ezmode button,
+html.ezmode input {
+	touch-action: manipulation;
+}
+
+/* no lingering grey flash on tap */
+html.ezmode .ez_btn,
+html.ezmode .ez_crumb,
+html.ezmode .ez_chk,
+html.ezmode .ez_tile,
+html.ezmode .ez_row {
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* hover styling is meaningless on touch and leaves rows stuck
+   highlighted after a tap; restrict it to real pointers */
+@media (hover: none) {
+	.ez_tile:hover {
+		background: var(--ez-surface);
+		border-color: var(--ez-border);
+	}
+	.ez_list tr.ez_row:hover td {
+		background: none;
+	}
+	.ez_tile:hover .ez_dl {
+		opacity: 1;
+	}
+}
