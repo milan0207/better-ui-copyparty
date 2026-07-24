@@ -721,7 +721,7 @@ var ezmode = (function () {
 	r.set = function (v) {
 		r.on = !!v;
 		swrite('ezmode', r.on ? 'y' : 'n');
-		clmod(document.documentElement, 'ez', r.on);
+		clmod(document.documentElement, 'ezmode', r.on);
 
 		if (r.on) {
 			if (!box) {

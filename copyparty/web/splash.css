@@ -261,15 +261,15 @@ html.bz .vols img {
 
 /* easy-mode login: a single centred card with just the essentials {{{ */
 
-html.ez {
+html.ezmode {
 	color-scheme: dark;
 }
-html.ez body {
+html.ezmode body {
 	background: #0f1115;
 	color: #e6e8ec;
 	font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
-html.ez #wrap {
+html.ezmode #wrap {
 	max-width: 21em;
 	margin: 12vh auto 0;
 	padding: 2em 1.75em 1.75em;
@@ -285,16 +285,16 @@ html.ez #wrap {
 }
 
 /* keep only the back button, login heading and the login form */
-html.ez #wrap > * {
+html.ezmode #wrap > * {
 	display: none !important;
 }
-html.ez #wrap > a#ezback,
-html.ez #wrap > h1#l,
-html.ez #wrap > h1#z,
-html.ez #wrap > div:has(#lf) {
+html.ezmode #wrap > a#ezback,
+html.ezmode #wrap > h1#l,
+html.ezmode #wrap > h1#z,
+html.ezmode #wrap > div:has(#lf) {
 	display: block !important;
 }
-html.ez #wrap > a#ezback {
+html.ezmode #wrap > a#ezback {
 	display: inline-block !important;
 	width: auto;
 	background: none !important;
@@ -306,11 +306,11 @@ html.ez #wrap > a#ezback {
 	padding: 0;
 	margin: 0 0 1em;
 }
-html.ez #wrap > a#ezback:hover {
+html.ezmode #wrap > a#ezback:hover {
 	color: #f0b429 !important;
 	background: none !important;
 }
-html.ez #wrap h1 {
+html.ezmode #wrap h1 {
 	font-size: 1.3em;
 	font-weight: 500;
 	margin: 0 0 1em;
@@ -320,7 +320,7 @@ html.ez #wrap h1 {
 	text-align: center;
 }
 
-html.ez #lf {
+html.ezmode #lf {
 	display: flex;
 	flex-direction: column;
 	gap: .8em;
@@ -329,11 +329,11 @@ html.ez #lf {
 	border: 0;
 	background: none;
 }
-html.ez #lf #x {
+html.ezmode #lf #x {
 	display: none;
 }
-html.ez #lf input#lu,
-html.ez #lf input#lp {
+html.ezmode #lf input#lu,
+html.ezmode #lf input#lp {
 	width: 100%;
 	box-sizing: border-box;
 	background: #0f1115;
@@ -344,13 +344,13 @@ html.ez #lf input#lp {
 	font-size: 1em;
 	margin: 0;
 }
-html.ez #lf input#lu:focus,
-html.ez #lf input#lp:focus {
+html.ezmode #lf input#lu:focus,
+html.ezmode #lf input#lp:focus {
 	outline: 2px solid #f0b429;
 	outline-offset: 1px;
 	border-color: #f0b429;
 }
-html.ez #lf input#ls {
+html.ezmode #lf input#ls {
 	width: 100%;
 	box-sizing: border-box;
 	background: #f0b429;
@@ -363,10 +363,10 @@ html.ez #lf input#ls {
 	cursor: pointer;
 	margin: 0;
 }
-html.ez #lf input#ls:hover {
+html.ezmode #lf input#ls:hover {
 	filter: brightness(1.08);
 }
-html.ez #lf a#w {
+html.ezmode #lf a#w {
 	display: block;
 	box-sizing: border-box;
 	width: 100%;
@@ -380,11 +380,11 @@ html.ez #lf a#w {
 	padding: .6em;
 	margin-top: .2em;
 }
-html.ez #lf a#w:hover {
+html.ezmode #lf a#w:hover {
 	color: #f0b429 !important;
 	border-color: #f0b429 !important;
 }
-html.ez #lf #lm {
+html.ezmode #lf #lm {
 	color: #ef4444;
 	text-align: center;
 	font-size: .9em;

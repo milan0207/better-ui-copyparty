@@ -1,7 +1,7 @@
 /* easy mode: self-contained styling for the simplified front-end.
-   scoped under html.ez so it cannot leak into the expert ui. */
+   scoped under html.ezmode so it cannot leak into the expert ui. */
 
-html.ez {
+html.ezmode {
 	--ez-bg: #0f1115;
 	--ez-surface: #171a21;
 	--ez-surface-h: #1f2430;
@@ -14,19 +14,19 @@ html.ez {
 }
 
 /* hide the entire expert surface; easy mode draws its own */
-html.ez #ops,
-html.ez .opview,
-html.ez #path,
-html.ez #tree,
-html.ez #wrap,
-html.ez #widget,
-html.ez #srv_info,
-html.ez #drops {
+html.ezmode #ops,
+html.ezmode .opview,
+html.ezmode #path,
+html.ezmode #tree,
+html.ezmode #wrap,
+html.ezmode #widget,
+html.ezmode #srv_info,
+html.ezmode #drops {
 	display: none !important;
 }
 
-html.ez,
-html.ez body {
+html.ezmode,
+html.ezmode body {
 	background: var(--ez-bg);
 	color: var(--ez-fg);
 	margin: 0;
@@ -223,7 +223,7 @@ html.ez body {
 	color: var(--ez-accent);
 }
 
-html.ez *:focus-visible {
+html.ezmode *:focus-visible {
 	outline: 2px solid var(--ez-accent);
 	outline-offset: 2px;
 }
@@ -246,7 +246,7 @@ html.ez *:focus-visible {
 
 /* icon masks */
 
-html.ez {
+html.ezmode {
 	--ez-chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
 }
 
@@ -292,7 +292,7 @@ html.ez {
 }
 
 /* keep the login link reachable, drop the permission/host jargon */
-html.ez #acc_info {
+html.ezmode #acc_info {
 	position: absolute;
 	top: .8em;
 	right: 1.25em;
@@ -300,20 +300,20 @@ html.ez #acc_info {
 	color: var(--ez-fg-dim);
 	z-index: 2;
 }
-html.ez #acc_info span {
+html.ezmode #acc_info span {
 	display: none;
 }
-html.ez #acc_info a {
+html.ezmode #acc_info a {
 	color: var(--ez-fg-dim);
 	text-decoration: none;
 	padding: .3em .6em;
 	border-radius: 6px;
 }
-html.ez #acc_info a:hover {
+html.ezmode #acc_info a:hover {
 	color: var(--ez-fg);
 	background: var(--ez-surface);
 }
-html.ez #ez {
+html.ezmode #ez {
 	padding-top: 3em;
 }
 
@@ -556,7 +556,7 @@ html.ezov body {
 
 /* extra icons */
 
-html.ez {
+html.ezmode {
 	--ez-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
 }
 
@@ -577,26 +577,26 @@ html.ez {
 
 /* the rename dialog carries regex/preset/windows-compat tooling and a
    read-only tag dump; easy mode keeps just old -> new + apply/cancel */
-html.ez #rui #rn_adv,
-html.ez #rui #rn_case,
-html.ez #rui #rn_win,
-html.ez #rui #rn_slash,
-html.ez #rui #rn_vadv,
-html.ez #rui .rn_dec,
-html.ez #rui>div:last-child {
+html.ezmode #rui #rn_adv,
+html.ezmode #rui #rn_case,
+html.ezmode #rui #rn_win,
+html.ezmode #rui #rn_slash,
+html.ezmode #rui #rn_vadv,
+html.ezmode #rui .rn_dec,
+html.ezmode #rui>div:last-child {
 	display: none !important;
 }
-html.ez #rui {
+html.ezmode #rui {
 	background: var(--ez-surface);
 	border: 1px solid var(--ez-border);
 	border-radius: var(--ez-radius);
 	padding: 1em 1.1em;
 	color: var(--ez-fg);
 }
-html.ez #rui table {
+html.ezmode #rui table {
 	margin-top: .6em;
 }
-html.ez #rui input[type="text"] {
+html.ezmode #rui input[type="text"] {
 	background: var(--ez-bg);
 	border: 1px solid var(--ez-border);
 	border-radius: 6px;
@@ -604,11 +604,11 @@ html.ez #rui input[type="text"] {
 	padding: .45em .6em;
 	font-size: 1em;
 }
-html.ez #rui button {
+html.ezmode #rui button {
 	border-radius: 6px;
 	padding: .45em .9em;
 }
-html.ez #rui #rn_apply {
+html.ezmode #rui #rn_apply {
 	background: var(--ez-accent);
 	border-color: var(--ez-accent);
 	color: var(--ez-accent-fg);
@@ -617,21 +617,21 @@ html.ez #rui #rn_apply {
 
 /* the "//" between the hidden decode/reset buttons is a bare text node,
    so it can only be removed by zeroing the row and restoring children */
-html.ez #rui>div:first-child {
+html.ezmode #rui>div:first-child {
 	font-size: 0;
 }
-html.ez #rui>div:first-child>* {
+html.ezmode #rui>div:first-child>* {
 	font-size: 1rem;
 	margin-right: .4em;
 }
-html.ez #rui {
+html.ezmode #rui {
 	max-width: min(92vw, 34em);
 	overflow: hidden;
 }
-html.ez #rui table {
+html.ezmode #rui table {
 	width: 100%;
 }
-html.ez #rui #rn_f td:first-child {
+html.ezmode #rui #rn_f td:first-child {
 	padding-right: .6em;
 	color: var(--ez-fg-dim);
 }
@@ -904,10 +904,10 @@ html.ez #rui #rn_f td:first-child {
 }
 
 /* login button lives in the header now; retire the corner block */
-html.ez #acc_info {
+html.ezmode #acc_info {
 	display: none !important;
 }
-html.ez #ez {
+html.ezmode #ez {
 	padding-top: 1.5em;
 }
 .ez_login {
